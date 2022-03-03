@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@if (Model != null)
+{
+    <ul>
+    @foreach(var user in Model)
+    {
+        <li>@user.Email</li>
+    }
+    </ul>    
+}
+
+
