@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyChat.Models;
 using MyChat.ViewModels;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MyChat.Controllers
 {
@@ -16,17 +18,19 @@ namespace MyChat.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Login = model.Login, UserName = model.Login};
+                User user = new User { Login = model.Login, UserName = model.Login };
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -44,6 +48,57 @@ namespace MyChat.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Login(string returnUrl = null)
+        {
+            return View(new LoginViewModel { ReturnUrl = returnUrl });
+        }
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+
+            }
+            if (!ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Login, model.Password, model.RememberMe, false);
+                //var user = await _userManager.FindByNameAsync(model.Login);
+                //var result = await _userManager.CheckPasswordAsync(user, model.Password);
+                //await _signInManager.SignInAsync(user, model.RememberMe);
+                //Debug.Write(result);
+                if (result.Succeeded)
+                {
+                    //await _signInManager.SignInAsync(user, model.RememberMe);
+                    // проверяем, принадлежит ли URL приложению
+                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout() 
+        { 
+            //delete cookies
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home"); 
         }
     }
 }

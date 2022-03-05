@@ -9,14 +9,16 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseNpgsql(connectionString));
 
-builder.Services.AddIdentity<User, IdentityRole>(options =>{
-        options.Password.RequiredLength = 6;
-        options.Password.RequireDigit = false;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireDigit = false;
-    })
+builder.Services.AddIdentity<User, IdentityRole>(options => {
+    options.Password.RequiredLength = 6;
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireDigit = false;
+    options.SignIn.RequireConfirmedEmail = false;
+})
+    .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationContext>();
 
 builder.Services.AddControllersWithViews();
@@ -30,6 +32,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
