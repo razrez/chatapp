@@ -1,25 +1,29 @@
 ﻿@model MyChat.ViewModels.RegisterViewModel
-<h2>рега нового юзера</h2>
+<h2>REGISTATION</h2> <br />
+
 <form method="post" asp-controller="Account" asp-action="Register">
 	<div asp-validation-summary="ModelOnly"></div>
-	<div>
+
+	<div class="form-group">
 		<label asp-for=Login></label><br/>
-		<input asp-for=Login />
+		<input asp-for=Login class = "form-control" />
 		<span asp-validation-for=Login></span>
 	</div>
 	
-	<div>
+	<div class="form-group"> 
 		<label asp-for=Password></label><br/>
-		<input asp-for=Password />
+		<input asp-for=Password class = "form-control" />
 		<span asp-validation-for=Password></span>
 	</div>
-	<div>
+
+	<div class="form-group">
 		<label asp-for=PasswordConfirm></label><br/>
-		<input asp-for=PasswordConfirm />
+		<input asp-for=PasswordConfirm class = "form-control" />
 		<span asp-validation-for=PasswordConfirm></span>
 	</div>
-	<div>
+
+	<div class="form-group">
 		<br/>
-		<input type="submit" value="Regisration" />
+		<input type="submit" class="btn btn-primary" value="sign up" />
 	</div>
 </form>

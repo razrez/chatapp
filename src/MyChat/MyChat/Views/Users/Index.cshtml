@@ -1,0 +1,23 @@
+﻿@model IEnumerable<MyChat.Models.User>
+@{
+    ViewBag.Title = "Список пользователей";
+}
+ 
+@Html.ActionLink("add new user", "Create", "Users", null, new {@class = "btn btn-outline-success btn-sm"})
+ <br/>
+<table class="table">
+    <tr><td>Login</td><td></td></tr>
+    @foreach (var user in Model)
+    {
+    //tr - ряд, td - ячейка
+        <tr>
+            <th>
+            <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                @user.Login
+                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                <button type="submit" class="btn btn-sm btn-danger"> Delete</button>
+            </form>
+            </th>
+        </tr>
+    }
+</table>

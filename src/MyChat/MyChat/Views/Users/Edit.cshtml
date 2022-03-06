@@ -1,0 +1,18 @@
+﻿@model MyChat.UserControlViews.EditUserViewModel
+@{
+    ViewBag.Title = "Редактирование пользователя";
+}
+<form asp-action="Edit" asp-controller="Users" class="form-floating mb-3">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-floating">
+        <input type="hidden" asp-for="Id" />
+    </div>
+
+    <div class="form-floating">
+        <input asp-for="Login" class="form-control" id="floatingInput"/>
+        <label for="floatingInput">login</label> <br />
+        <input type="submit" class="btn btn-primary" value = "save"/>
+    </div>
+
+    
+</form>

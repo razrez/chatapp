@@ -60,10 +60,6 @@ namespace MyChat.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-
-            }
             if (!ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(model.Login, model.Password, model.RememberMe, false);
