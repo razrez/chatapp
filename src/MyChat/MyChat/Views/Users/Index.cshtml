@@ -3,18 +3,19 @@
     ViewBag.Title = "Список пользователей";
 }
  
-@Html.ActionLink("add new user", "Create", "Users", null, new {@class = "btn btn-outline-success btn-sm"})
+@Html.ActionLink("add new user", "Create", "Users", null, new {@class = "btn btn-outline-success btn-sm img-thumbnail shadow"})
  <br/>
-<table class="table">
-    <tr><td>Login</td><td></td></tr>
+<table class="table table-hover table-secondary img-thumbnail shadow small ali" >
+    <tr><td>Login</td></tr>
     @foreach (var user in Model)
     {
     //tr - ряд, td - ячейка
         <tr>
-            <th>
+            <th class="">
             <form asp-action="Delete" asp-route-id="@user.Id" method="post">
                 @user.Login
-                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                <a class="btn btn-outline-primary btn-sm img-thumbnail shadow" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                <a class="btn btn-outline-danger btn-sm img-thumbnail shadow " asp-action="ChangePassword" asp-route-id="@user.Id">Change password</a>
                 <button type="submit" class="btn btn-sm btn-danger"> Delete</button>
             </form>
             </th>

@@ -17,3 +17,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.form-floating {
+    width: 55%
+}
