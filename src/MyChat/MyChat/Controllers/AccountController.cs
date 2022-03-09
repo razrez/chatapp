@@ -53,6 +53,12 @@ namespace MyChat.Controllers
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
+            /*if (!HttpContext.User.IsInRole("admin"))
+            {
+                return View("Error", new string[] { "В доступе отказано" });
+            }
+
+            ViewBag.returnUrl = returnUrl;*/
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
         
