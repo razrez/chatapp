@@ -7,7 +7,7 @@ using MyChat.UserControlViews;
 
 namespace MyChat.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Role)]
     public class UsersController : Controller
     {
         UserManager<User> _userManager;
