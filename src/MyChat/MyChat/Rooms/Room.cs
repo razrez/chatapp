@@ -12,7 +12,7 @@ namespace MyChat.Models
 
         public string? Password { get; set; }
 
-        public int? AdminId { get; set; } //можно потом сделать форин кей,
+        public string AdminId { get; set; } //можно потом сделать форин кей,
                                           //но хз как логика работать будет
                                           //при выходе админа из комнаты может дропнуться вся комната
 

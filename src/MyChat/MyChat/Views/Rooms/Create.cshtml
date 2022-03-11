@@ -1,0 +1,19 @@
+﻿@model MyChat.RoomsViewModels.CreateRoomModel
+@{
+    ViewBag.Title = "Room creation";
+}
+<form asp-action="Create" asp-controller="Rooms" >
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Name"></label><br />
+        <input asp-for="Name" class = "form-control" type="text"/>
+    </div>
+    <div class="form-group">
+            <label asp-for="IsPrivate"></label><br />
+            <input asp-for="IsPrivate" />
+        </div>
+    <div class="form-group">
+        <br/>
+        <input type="submit" class="btn btn-outline-secondary" value = "Create"/>
+    </div>
+</form>

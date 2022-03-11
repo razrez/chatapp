@@ -30,7 +30,7 @@ namespace MyChat.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Login = model.Login, UserName = model.Login };
+                var user = new User { Login = model.Login, UserName = model.Login };
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

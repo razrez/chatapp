@@ -7,10 +7,10 @@ using MyChat.UserControlViews;
 
 namespace MyChat.Controllers
 {
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
-        UserManager<User> _userManager;
+        private readonly UserManager<User> _userManager;
 
         public UsersController(UserManager<User> userManager)
         {
@@ -26,7 +26,7 @@ namespace MyChat.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Login = model.Login, UserName = model.Login };
+                var user = new User { Login = model.Login, UserName = model.Login };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -42,15 +42,19 @@ namespace MyChat.Controllers
             }
             return View(model);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Edit(string id)
         {
-            User user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
-            EditUserViewModel model = new EditUserViewModel { Id = user.Id, Login = user.Login};
+            var model = new EditUserViewModel { Id = user.Id, Login = user.Login};
             return View(model);
         }
 
@@ -59,24 +63,20 @@ namespace MyChat.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _userManager.FindByIdAsync(model.Id);
-                if (user != null)
-                {
-                    user.Login = model.Login;
-                    user.UserName = model.Login;
+                var user = await _userManager.FindByIdAsync(model.Id);
+                if (user == null) return View(model);
+                user.Login = model.Login;
+                user.UserName = model.Login;
 
-                    var result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(string.Empty, error.Description);
-                        }
-                    }
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
             return View(model);
@@ -85,22 +85,22 @@ namespace MyChat.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(string id)
         {
-            User user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
-                IdentityResult result = await _userManager.DeleteAsync(user);
+                var result = await _userManager.DeleteAsync(user);
             }
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> ChangePassword(string id)
         {
-            User user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
-            ChangePasswordViewModel model = new ChangePasswordViewModel { Id = user.Id, Login = user.Login };
+            var model = new ChangePasswordViewModel { Id = user.Id, Login = user.Login };
             return View(model);
         }
 
@@ -109,7 +109,7 @@ namespace MyChat.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _userManager.FindByIdAsync(model.Id);
+                var user = await _userManager.FindByIdAsync(model.Id);
                 if (user != null)
                 {
                     var _passwordValidator =
@@ -117,7 +117,7 @@ namespace MyChat.Controllers
                     var _passwordHasher =
                         HttpContext.RequestServices.GetService(typeof(IPasswordHasher<User>)) as IPasswordHasher<User>;
 
-                    IdentityResult result =
+                    var result =
                         await _passwordValidator.ValidateAsync(_userManager, user, model.NewPassword);
 
                     if (result.Succeeded)
