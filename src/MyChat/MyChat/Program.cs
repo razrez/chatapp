@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyChat.Models;
+using MyChat.Rooms;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ builder.Services.AddIdentity<User, IdentityRole>(options => {
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationContext>();
 
+builder.Services.AddDbContext<RoomsContext>(options =>
+    options.UseNpgsql("Host=localhost;Port=5432;Database=Rooms;Username=postgres;Password=3369"));
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
