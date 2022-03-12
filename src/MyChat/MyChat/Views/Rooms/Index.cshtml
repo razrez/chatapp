@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<MyChat.Models.Room>
 
+<style>
+    .toRight{
+    text-align: right;
+    }
+</style>
+
 @Html.ActionLink("create new room", "Create",
     "Rooms", null,
     new {@class = "btn btn-outline-success btn-sm img-thumbnail shadow"})
@@ -11,7 +17,7 @@
     {
         <tr>
             <td>@room.Name</td>
-            <td><a class="btn btn-outline-primary btn-sm img-thumbnail shadow" asp-action="Join">join</a></td>
+            <td><a class="btn btn-outline-primary btn-sm img-thumbnail shadow" asp-action="Join" asp-route-roomId="@room.Id">join</a></td>
             <td>
                 <div class="toRight">
                     <button type="submit" class="btn btn-sm btn-danger" asp-action="Delete">Delete</button>
@@ -20,8 +26,4 @@
         </tr>
     }
 </table>
-<style>
-    .toRight{
-    text-align: right;
-    }
-</style>
+

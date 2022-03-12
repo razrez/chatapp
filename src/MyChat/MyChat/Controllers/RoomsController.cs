@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyChat.Models;
 using MyChat.Rooms;
 using MyChat.RoomsViewModels;
@@ -26,6 +27,44 @@ public class RoomsController : Controller
         return View(rooms);
     }
     //join(get, post), leave, create(get,post)
+    public async Task<IActionResult> Join(int roomId)
+    {
+        //нужно будет добавить проверку на наличие юзера в комнате
+        if (User.Identity.IsAuthenticated)
+        {
+            var currentUser = await _userManager.FindByNameAsync(User.Identity.Name); // берем из Identity
+            var currentRoom = await _context.Rooms.FindAsync(roomId);
+
+            //var roomsUsers = await _context.RoomUsers.ToListAsync();
+            //var roomUser = await _context.RoomUsers.FindAsync(currentUser.Id)
+            //вот тут косяк, ещётся по PK, а тут это Id from Identity
+            var roomUsers = await _context.RoomUsers.ToListAsync();
+            var roomUser = roomUsers.Where(s => s.IdentityUser == currentUser.Id && s.RoomId == roomId).FirstOrDefault();
+            if (roomUser != null)
+            {
+                return Content($"ur login is:{roomUser.Login} and u've already been joined");
+            }
+
+            //var res = currentRoom.RoomUsers.Contains;
+
+            //добавление юзера в комнату
+            /*var user = new RoomUsers() { IdentityUser = currentUser.Id, Login = currentUser.Login, RoomId = roomId };
+            await _context.RoomUsers.AddAsync(user);
+            await _context.SaveChangesAsync();*/
+
+
+            return Content(content: currentRoom.Name);
+        }
+       
+        return RedirectToAction("Login","Account");
+    }
+
+    public async Task<IActionResult> Room(int roomId)
+    {
+        var room = await _context.Rooms.FindAsync(roomId);
+        return Content(String.Join(",", room.RoomUsers ));
+        return View();
+    }
 
     [HttpGet]
     public IActionResult Create() => View();

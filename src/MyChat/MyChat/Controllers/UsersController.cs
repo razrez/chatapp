@@ -47,7 +47,7 @@ namespace MyChat.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(string id) //передаётся через asp-route-id
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
