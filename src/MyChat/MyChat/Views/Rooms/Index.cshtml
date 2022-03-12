@@ -1,5 +1,27 @@
-﻿@model System.Collections.Generic.List<MyChat.Models.Room>
+﻿@model IEnumerable<MyChat.Models.Room>
 
 @Html.ActionLink("create new room", "Create",
     "Rooms", null,
     new {@class = "btn btn-outline-success btn-sm img-thumbnail shadow"})
+<br/><br/>
+<h2>Cписок доступных комнат</h2>
+<table class="table table-hover table-secondary img-thumbnail shadow small ali" >
+    <tr><th>Room-name</th><th/><th/></tr>
+    @foreach (var room in Model)
+    {
+        <tr>
+            <td>@room.Name</td>
+            <td><a class="btn btn-outline-primary btn-sm img-thumbnail shadow" asp-action="Join">join</a></td>
+            <td>
+                <div class="toRight">
+                    <button type="submit" class="btn btn-sm btn-danger" asp-action="Delete">Delete</button>
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+<style>
+    .toRight{
+    text-align: right;
+    }
+</style>

@@ -1,6 +1,11 @@
 ﻿body {
 }
 
+
 .form-floating {
     width: 55%
+}
+
+.toRight{
+    text-align: right;
 }
