@@ -5,7 +5,7 @@ namespace MyChat.RoomsViewModels;
 
 public class CreateRoomModel
 {
-    //public int Id { get; set; }
+    //public int IdentityUser { get; set; }
     
     [Required]
     [Display(Name = "Room Name")]

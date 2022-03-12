@@ -40,7 +40,7 @@ namespace MyChat.Migrations
                         name: "FK_RoomUsersContext_RoomContext_RoomId",
                         column: x => x.RoomId,
                         principalTable: "RoomContext",
-                        principalColumn: "Id",
+                        principalColumn: "IdentityUser",
                         onDelete: ReferentialAction.Cascade);
                 });
 

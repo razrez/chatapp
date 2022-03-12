@@ -30,8 +30,9 @@ namespace MyChat.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AdminId")
-                        .HasColumnType("integer");
+                    b.Property<string>("AdminId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("boolean");
@@ -44,34 +45,38 @@ namespace MyChat.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoomContext");
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("MyChat.Rooms.RoomUsers", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("IdentityUser")
                         .HasColumnType("text");
 
                     b.Property<string>("Login")
                         .HasColumnType("text");
 
-                    b.Property<int>("RoomId")
+                    b.Property<int?>("RoomId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("RoomUsersContext");
+                    b.ToTable("RoomUsers");
                 });
 
             modelBuilder.Entity("MyChat.Rooms.RoomUsers", b =>
                 {
                     b.HasOne("MyChat.Models.Room", "Room")
                         .WithMany("RoomUsers")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoomId");
 
                     b.Navigation("Room");
                 });

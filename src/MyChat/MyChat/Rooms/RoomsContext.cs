@@ -8,10 +8,11 @@ namespace MyChat.Rooms
     public class RoomsContext : DbContext
     {
         // dbset 
-        public DbSet<Room> RoomContext { get; set; }
-        public DbSet<RoomUsers> RoomUsersContext { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<RoomUsers> RoomUsers { get; set; }
         public RoomsContext( DbContextOptions<RoomsContext> options):base(options)
         {
+            //Database.EnsureCreated();
             Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

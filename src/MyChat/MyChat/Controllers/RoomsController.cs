@@ -22,7 +22,7 @@ public class RoomsController : Controller
     // GET
     public IActionResult Index()
     {
-        var rooms = _context.RoomContext.ToList();
+        var rooms = _context.Rooms.ToList();
         return View(rooms);
     }
     //join(get, post), leave, create(get,post)
@@ -33,15 +33,19 @@ public class RoomsController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateRoomModel roomModel)
     {
+        if (!User.Identity.IsAuthenticated) return RedirectToAction("Login", "Account");
         if (ModelState.IsValid)
         {
             var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
-            var room = new Room() { Name = roomModel.Name, IsPrivate = roomModel.IsPrivate, AdminId = currentUser.Id};
-            var user = new RoomUsers() { Id = currentUser.Id, Login = currentUser.Login, Room = room };
-            _context.RoomContext.Add(room);
-            _context.RoomUsersContext.Add(user);
+            var room = new Room() { Name = roomModel.Name, IsPrivate = roomModel.IsPrivate, AdminId = currentUser.Id };
+            var user = new RoomUsers() { IdentityUser = currentUser.Id, Login = currentUser.Login, Room = room };
+            await _context.Rooms.AddAsync(room);
+            await _context.RoomUsers.AddAsync(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
-        return Content("");
+        ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+        return View(roomModel);
     }
 
 }

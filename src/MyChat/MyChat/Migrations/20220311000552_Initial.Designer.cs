@@ -26,11 +26,11 @@ namespace MyChat.Migrations
 
             modelBuilder.Entity("MyChat.Models.Room", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("IdentityUser")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdentityUser"));
 
                     b.Property<int?>("AdminId")
                         .HasColumnType("integer");
@@ -44,14 +44,14 @@ namespace MyChat.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdentityUser");
 
                     b.ToTable("RoomContext");
                 });
 
             modelBuilder.Entity("MyChat.Rooms.RoomUsers", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("IdentityUser")
                         .HasColumnType("text");
 
                     b.Property<string>("Login")
@@ -60,7 +60,7 @@ namespace MyChat.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdentityUser");
 
                     b.HasIndex("RoomId");
 
