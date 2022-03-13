@@ -1,8 +1,15 @@
-﻿@model dynamic
-
+﻿@model MyChat.Models.Room
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+<h2>
+    
+    <span style="background-color:slategrey; color: whitesmoke; animation: cubic-bezier(10,10,3,4)">
+        @User.Identity.Name
+    </span>, welcome to the room "
+    <span style="background-color:slategrey; color: whitesmoke; animation: cubic-bezier(1,2,3,4)">
+        @Model.Name
+    </span>"
+</h2>

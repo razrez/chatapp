@@ -18,7 +18,7 @@ namespace MyChat.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
+        
         [HttpGet]
         public IActionResult Register()
         {
@@ -49,7 +49,7 @@ namespace MyChat.Controllers
             }
             return View(model);
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl = null)
         {

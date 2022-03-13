@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MyChat.Controllers;
 using MyChat.Models;
 using MyChat.Rooms;
 

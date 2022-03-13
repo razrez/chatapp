@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyChat.Models;
@@ -6,6 +7,7 @@ using MyChat.Rooms;
 using MyChat.RoomsViewModels;
 
 namespace MyChat.Controllers;
+
 
 public class RoomsController : Controller
 {
@@ -27,6 +29,7 @@ public class RoomsController : Controller
         return View(rooms);
     }
     //join(get, post), leave, create(get,post)
+    [HttpPost]
     public async Task<IActionResult> Join(int roomId)
     {
         //нужно будет добавить проверку на наличие юзера в комнате
@@ -42,18 +45,15 @@ public class RoomsController : Controller
             var roomUser = roomUsers.FirstOrDefault(s => s.IdentityUser == currentUser.Id && s.RoomId == roomId);
             if (roomUser != null)
             {
-                return View();
+                return View(currentRoom);
             }
-
-            //var res = currentRoom.RoomUser.Contains;
 
             //добавление юзера в комнату
             var user = new RoomUser() { IdentityUser = currentUser.Id, Login = currentUser.Login, RoomId = roomId };
             await _context.RoomUsers.AddAsync(user);
             await _context.SaveChangesAsync();
 
-
-            return View();
+            return View(currentRoom);
         }
        
         return RedirectToAction("Login","Account");
@@ -89,8 +89,23 @@ public class RoomsController : Controller
     }
 
     [HttpPost]
-    public IActionResult Delete(string id)
+    public async Task<IActionResult> Delete(int id) //room-id
     {
-        throw new NotImplementedException();
+        if (!_signInManager.IsSignedIn(User))
+        {
+           return RedirectToAction("Login", "Account");
+        }
+        var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+        var currentRoom = await _context.Rooms.FindAsync(id);
+        if (currentUser.Id == currentRoom.AdminId)
+        {
+            _context.Remove(currentRoom);
+            _context.SaveChangesAsync();
+        }
+        else
+        {
+            return Content("YOU ARE NOT A ROOM-ADMIN!!");
+        }
+        return RedirectToAction("Index");
     }
 }
