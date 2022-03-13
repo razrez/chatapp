@@ -5,12 +5,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyChat.Migrations
 {
-    public partial class Initial : Migration
+    public partial class RoomsMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "RoomContext",
+                name: "Rooms",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -18,45 +18,40 @@ namespace MyChat.Migrations
                     Name = table.Column<string>(type: "text", nullable: true),
                     IsPrivate = table.Column<bool>(type: "boolean", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: true),
-                    AdminId = table.Column<int>(type: "integer", nullable: true)
+                    AdminId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomContext", x => x.Id);
+                    table.PrimaryKey("PK_Rooms", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoomUsersContext",
+                name: "RoomUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Login = table.Column<string>(type: "text", nullable: true),
-                    RoomId = table.Column<int>(type: "integer", nullable: false)
+                    RoomId = table.Column<int>(type: "integer", nullable: false),
+                    IdentityUser = table.Column<string>(type: "text", nullable: false),
+                    Login = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomUsersContext", x => x.Id);
+                    table.PrimaryKey("PK_RoomUsers", x => new { x.RoomId, x.IdentityUser });
                     table.ForeignKey(
-                        name: "FK_RoomUsersContext_RoomContext_RoomId",
+                        name: "FK_RoomUsers_Rooms_RoomId",
                         column: x => x.RoomId,
-                        principalTable: "RoomContext",
-                        principalColumn: "IdentityUser",
+                        principalTable: "Rooms",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomUsersContext_RoomId",
-                table: "RoomUsersContext",
-                column: "RoomId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RoomUsersContext");
+                name: "RoomUsers");
 
             migrationBuilder.DropTable(
-                name: "RoomContext");
+                name: "Rooms");
         }
     }
 }

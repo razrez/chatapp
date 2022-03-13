@@ -16,6 +16,6 @@ namespace MyChat.Models
                                           //но хз как логика работать будет
                                           //при выходе админа из комнаты может дропнуться вся комната
 
-        public List<RoomUsers> RoomUsers { get; set; } = new();
+        public List<RoomUser> RoomUsers { get; set; } = new();
     }
 }

@@ -15,5 +15,5 @@ public class CreateRoomModel
 
     public string? Password { get; set; }
 
-    //public List<RoomUsers> RoomUsers { get; set; } = new();
+    //public List<RoomUser> RoomUser { get; set; } = new();
 }

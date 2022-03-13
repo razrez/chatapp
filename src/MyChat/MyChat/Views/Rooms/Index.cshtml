@@ -2,7 +2,7 @@
 
 <style>
     .toRight{
-    text-align: right;
+        text-align: right;
     }
 </style>
 
@@ -12,18 +12,20 @@
 <br/><br/>
 <h2>Cписок доступных комнат</h2>
 <table class="table table-hover table-secondary img-thumbnail shadow small ali" >
-    <tr><th>Room-name</th><th/><th/></tr>
-    @foreach (var room in Model)
-    {
-        <tr>
+    <tr><th>Room-name</th><th/><th/></tr>
+    @foreach (var room in Model)
+    {
+        <tr>
             <td>@room.Name</td>
             <td><a class="btn btn-outline-primary btn-sm img-thumbnail shadow" asp-action="Join" asp-route-roomId="@room.Id">join</a></td>
             <td>
                 <div class="toRight">
-                    <button type="submit" class="btn btn-sm btn-danger" asp-action="Delete">Delete</button>
+                    <form action="" method="post">
+                        <button type="submit" class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@room.Id">Delete</button>
+                    </form>
                 </div>
             </td>
-        </tr>
-    }
+        </tr>
+    }
 </table>
 

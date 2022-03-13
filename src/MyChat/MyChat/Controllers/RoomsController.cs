@@ -35,25 +35,25 @@ public class RoomsController : Controller
             var currentUser = await _userManager.FindByNameAsync(User.Identity.Name); // берем из Identity
             var currentRoom = await _context.Rooms.FindAsync(roomId);
 
-            //var roomsUsers = await _context.RoomUsers.ToListAsync();
-            //var roomUser = await _context.RoomUsers.FindAsync(currentUser.Id)
-            //вот тут косяк, ещётся по PK, а тут это Id from Identity
+            //var roomsUsers = await _context.RoomUser.ToListAsync();
+            //var roomUser = await _context.RoomUser.FindAsync(currentUser.Id)
+            //вот тут косяк, ищется по PK, а тут это Id from Identity
             var roomUsers = await _context.RoomUsers.ToListAsync();
-            var roomUser = roomUsers.Where(s => s.IdentityUser == currentUser.Id && s.RoomId == roomId).FirstOrDefault();
+            var roomUser = roomUsers.FirstOrDefault(s => s.IdentityUser == currentUser.Id && s.RoomId == roomId);
             if (roomUser != null)
             {
-                return Content($"ur login is:{roomUser.Login} and u've already been joined");
+                return View();
             }
 
-            //var res = currentRoom.RoomUsers.Contains;
+            //var res = currentRoom.RoomUser.Contains;
 
             //добавление юзера в комнату
-            /*var user = new RoomUsers() { IdentityUser = currentUser.Id, Login = currentUser.Login, RoomId = roomId };
+            var user = new RoomUser() { IdentityUser = currentUser.Id, Login = currentUser.Login, RoomId = roomId };
             await _context.RoomUsers.AddAsync(user);
-            await _context.SaveChangesAsync();*/
+            await _context.SaveChangesAsync();
 
 
-            return Content(content: currentRoom.Name);
+            return View();
         }
        
         return RedirectToAction("Login","Account");
@@ -72,12 +72,13 @@ public class RoomsController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(CreateRoomModel roomModel)
     {
+        //добавить проверку на уже существующую комнату
         if (!User.Identity.IsAuthenticated) return RedirectToAction("Login", "Account");
         if (ModelState.IsValid)
         {
             var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
             var room = new Room() { Name = roomModel.Name, IsPrivate = roomModel.IsPrivate, AdminId = currentUser.Id };
-            var user = new RoomUsers() { IdentityUser = currentUser.Id, Login = currentUser.Login, Room = room };
+            var user = new RoomUser() { IdentityUser = currentUser.Id, Login = currentUser.Login, Room = room };
             await _context.Rooms.AddAsync(room);
             await _context.RoomUsers.AddAsync(user);
             await _context.SaveChangesAsync();
@@ -87,4 +88,9 @@ public class RoomsController : Controller
         return View(roomModel);
     }
 
+    [HttpPost]
+    public IActionResult Delete(string id)
+    {
+        throw new NotImplementedException();
+    }
 }
