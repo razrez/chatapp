@@ -100,12 +100,14 @@ public class RoomsController : Controller
         if (currentUser.Id == currentRoom.AdminId)
         {
             _context.Remove(currentRoom);
-            _context.SaveChangesAsync();
+            var res = _context.SaveChangesAsync();
+            if (!res.IsCompletedSuccessfully) return RedirectToAction("Index");
         }
         else
         {
             return Content("YOU ARE NOT A ROOM-ADMIN!!");
         }
-        return RedirectToAction("Index");
+
+        return Content("something has gone wrong...");
     }
 }
