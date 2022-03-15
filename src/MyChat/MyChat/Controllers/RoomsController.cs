@@ -62,7 +62,7 @@ public class RoomsController : Controller
         return RedirectToAction("Login","Account");
     }
 
-    public async Task<IActionResult> Room(int roomId) // == Index
+    /*public async Task<IActionResult> Room(int roomId) // == Index
     {
         var currentUser = await _userManager.GetUserAsync(User);
         if (User.Identity.IsAuthenticated)
@@ -74,9 +74,9 @@ public class RoomsController : Controller
         
         return View(messages);
         //return Content(String.Join(",", room.RoomUsers ));
-    }
+    }*/
 
-    public async Task<IActionResult> CreateMessage(Message message)
+    /*public async Task<IActionResult> CreateMessage(Message message)
     {
         if (ModelState.IsValid)
         {
@@ -88,7 +88,7 @@ public class RoomsController : Controller
             return Ok();
         }
         return NotFound();
-    }
+    }*/
     [HttpGet]
     public IActionResult Create() => View();
 
