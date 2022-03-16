@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyChat.Migrations.Application
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220315070437_AppUserMessage")]
+    [Migration("20220316182749_AppUserMessage")]
     partial class AppUserMessage
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -183,7 +183,7 @@ namespace MyChat.Migrations.Application
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("MyChat.Models.User", b =>

@@ -10,6 +10,7 @@ namespace MyChat.Models
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
             Database.EnsureCreated();
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {

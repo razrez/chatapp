@@ -181,7 +181,7 @@ namespace MyChat.Migrations.Application
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("MyChat.Models.User", b =>

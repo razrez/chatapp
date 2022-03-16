@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyChat.Controllers;
-using MyChat.Hubs;
 using MyChat.Models;
 using MyChat.Rooms;
+using MyChat.SignalR.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,12 +25,14 @@ builder.Services.AddIdentity<User, IdentityRole>(options => {
     .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationContext>();
 
-builder.Services.AddSignalR();
 builder.Services.AddDbContext<RoomsContext>(options =>
     options.UseNpgsql("Host=localhost;Port=5432;Database=Rooms;Username=postgres;Password=3369"));
+builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -48,10 +50,11 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapHub<ChatHub>("/Chat/Index");
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

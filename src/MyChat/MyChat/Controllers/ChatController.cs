@@ -31,22 +31,19 @@ public class ChatController : Controller
             ViewBag.CurrentUserName = currentUser.UserName;
         }
         var messages = await _applicationContext.Messages.ToListAsync();
+        ViewData["messages"] = messages;
         //var room = await _roomsContext.Rooms.FindAsync(roomId);
         
-        return View(messages);
+        return View();
     }
 
-    public async Task<IActionResult> Create(Message message)
+    [HttpPost]
+    public async Task<IActionResult> Send (Message message)
     {
-        if (ModelState.IsValid)
-        {
-            message.UserName = User.Identity.Name;
-            var sender = await _userManager.GetUserAsync(User);
-            message.UserId = sender.Id;
-            await _applicationContext.Messages.AddAsync(message);
-            await _applicationContext.SaveChangesAsync();
-            return Ok();
-        }
-        return NotFound();
+        var sender = await _userManager.GetUserAsync(User);
+        message.UserId = sender.Id;
+        await _applicationContext.Messages.AddAsync(message);
+        var res = await _applicationContext.SaveChangesAsync();
+        return RedirectToAction("Index");
     }
 }

@@ -157,7 +157,7 @@ namespace MyChat.Migrations.Application
                 });
 
             migrationBuilder.CreateTable(
-                name: "Message",
+                name: "Messages",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -169,9 +169,9 @@ namespace MyChat.Migrations.Application
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Message", x => x.Id);
+                    table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Message_AspNetUsers_UserId",
+                        name: "FK_Messages_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -216,8 +216,8 @@ namespace MyChat.Migrations.Application
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_UserId",
-                table: "Message",
+                name: "IX_Messages_UserId",
+                table: "Messages",
                 column: "UserId");
         }
 
@@ -239,7 +239,7 @@ namespace MyChat.Migrations.Application
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Message");
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
