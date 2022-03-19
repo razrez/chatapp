@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MyChat.Data;
 using MyChat.Models;
 using MyChat.Rooms;
 
@@ -9,14 +10,12 @@ namespace MyChat.Controllers;
 public class ChatController : Controller
 {
     private readonly ApplicationContext _applicationContext;
-    private readonly RoomsContext _roomsContext;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;    
-    public ChatController(RoomsContext roomsContext, RoleManager<IdentityRole> roleManager, 
+    public ChatController(RoleManager<IdentityRole> roleManager, 
         UserManager<User> userManager, SignInManager<User> signInManager, ApplicationContext applicationContext)
     {
-        _roomsContext = roomsContext;
         _roleManager = roleManager;
         _userManager = userManager;
         _signInManager = signInManager;

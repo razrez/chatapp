@@ -2,20 +2,18 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyChat.Models;
+using MyChat.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MyChat.Migrations.Application
+namespace MyChat.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220316182749_AppUserMessage")]
-    partial class AppUserMessage
+    partial class ApplicationContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,6 +162,9 @@ namespace MyChat.Migrations.Application
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("RoomId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("text");
@@ -181,9 +182,35 @@ namespace MyChat.Migrations.Application
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RoomId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("MyChat.Models.Room", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdminId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("MyChat.Models.User", b =>
@@ -254,6 +281,26 @@ namespace MyChat.Migrations.Application
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MyChat.Rooms.RoomUser", b =>
+                {
+                    b.Property<int>("RoomId")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("Login")
+                        .HasColumnType("text");
+
+                    b.HasKey("RoomId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RoomUsers");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -307,6 +354,10 @@ namespace MyChat.Migrations.Application
 
             modelBuilder.Entity("MyChat.Models.Message", b =>
                 {
+                    b.HasOne("MyChat.Models.Room", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("RoomId");
+
                     b.HasOne("MyChat.Models.User", "Sender")
                         .WithMany("Messages")
                         .HasForeignKey("UserId")
@@ -316,9 +367,37 @@ namespace MyChat.Migrations.Application
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("MyChat.Rooms.RoomUser", b =>
+                {
+                    b.HasOne("MyChat.Models.Room", "Room")
+                        .WithMany("RoomUsers")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyChat.Models.User", "User")
+                        .WithMany("RoomUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MyChat.Models.Room", b =>
+                {
+                    b.Navigation("Messages");
+
+                    b.Navigation("RoomUsers");
+                });
+
             modelBuilder.Entity("MyChat.Models.User", b =>
                 {
                     b.Navigation("Messages");
+
+                    b.Navigation("RoomUsers");
                 });
 #pragma warning restore 612, 618
         }

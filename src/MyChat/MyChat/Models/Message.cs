@@ -11,7 +11,7 @@ public class Message
     [Required]
     public string Text { get; set; }
     public DateTime When { get; set; }
-
+    
     public string UserId { get; set; }
     public virtual User Sender { get; set; }
 
