@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyChat.Data;
@@ -98,11 +97,11 @@ public class RoomsController : Controller
         {
            return RedirectToAction("Login", "Account");
         }
-        var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
         var currentRoom = await _applicationContext.Rooms.FindAsync(id);
-        if (currentUser.Id == currentRoom.AdminId)
+        var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+        if (currentUser.Id.Equals(currentRoom.AdminId))
         {
-            _applicationContext.Remove(currentRoom);
+            _applicationContext.Rooms.Remove(currentRoom);
             var res = _applicationContext.SaveChangesAsync();
             if (!res.IsCompletedSuccessfully) return RedirectToAction("Index");
         }
