@@ -24,25 +24,24 @@ public class RoomsController : Controller
         _applicationContext = applicationContext;
     }
     // GET
+    // просто отображаются все комнаты
     public IActionResult Index()
     {
         var rooms = _applicationContext.Rooms.ToList();
         return View(rooms);
     }
-    //join(get, post), leave, create(get,post)
+    //join(post), leave, create(get,post)
 
+    // логика приссоединения к комнате с выводом сообщений в ней
     [HttpPost]
     public async Task<IActionResult> Join(int roomId)
     {
-        //нужно будет добавить проверку на наличие юзера в комнате
         if (User.Identity.IsAuthenticated)
         {
             var currentUser = await _userManager.FindByNameAsync(User.Identity.Name); // берем из Identity
             var currentRoom = await _applicationContext.Rooms.FindAsync(roomId);
-
-            //var roomsUsers = await _context.RoomUser.ToListAsync();
-            //var roomUser = await _context.RoomUser.FindAsync(currentUser.Id)
-            //вот тут косяк, ищется по PK, а тут это Id from Identity
+            
+            // просто вход в комнату
             var roomUsers = await _applicationContext.RoomUsers.ToListAsync();
             var roomUser = roomUsers.FirstOrDefault(s => s.UserId == currentUser.Id && s.RoomId == roomId);
             if (roomUser != null)
@@ -50,7 +49,7 @@ public class RoomsController : Controller
                 return View(currentRoom);
             }
 
-            //добавление юзера в комнату
+            //добавление нового юзера в комнату
             var user = new RoomUser() { UserId = currentUser.Id, Login = currentUser.Login, RoomId = roomId };
             await _applicationContext.RoomUsers.AddAsync(user);
             await _applicationContext.SaveChangesAsync();
@@ -60,14 +59,8 @@ public class RoomsController : Controller
        
         return RedirectToAction("Login","Account");
     }
-
-    public async Task<IActionResult> Room()
-    {
-        /*var room = await _context.Rooms.FindAsync(roomId);
-        return Content(String.Join(",", room.RoomUsers ));*/
-        return View();
-    }
-
+    
+    // ссылка в индексе на создание комнаты
     [HttpGet]
     public IActionResult Create() => View();
 
@@ -90,6 +83,7 @@ public class RoomsController : Controller
         return View(roomModel);
     }
 
+    // удаление комнаты через индекс
     [HttpPost]
     public async Task<IActionResult> Delete(int id) //room-id
     {
