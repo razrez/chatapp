@@ -33,7 +33,8 @@ public class RoomsController : Controller
         return View(rooms);
     }
     //join(post), leave, create(get,post)
-    [HttpGet("{id:int}")]
+    //отображение чата
+    [HttpGet("/rooms/{id:int}")]
     public IActionResult Chat(int id)
     {
         var roomWithMessages = _applicationContext.Rooms

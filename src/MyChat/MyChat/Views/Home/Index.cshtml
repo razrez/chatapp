@@ -18,10 +18,11 @@
     <h1>Wellcum, @User.Identity.Name</h1>
  
     <h2>
-    <form method="post" asp-controller="Account" asp-action="Logout">
-        <input type="submit" class = "btn btn-primary" value="log out" />
-    </form>
+        <form method="post" asp-controller="Account" asp-action="Logout">
+            <input type="submit" class = "btn btn-primary" value="log out" />
+        </form>
     </h2>
+    <vc:room></vc:room>
 }
 
 else
