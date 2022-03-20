@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Room>
+@*пойдет потом в сайд меню*@
+<div class="side-menu">
+        @foreach(var room in Model){
+        <a class="room-button" asp-controller="Rooms" asp-action="Join" asp-route-id="@room.Id">
+            @room.Name
+        </a>
+        }
+
+        <a class="room-button" id="create-room-btn" href="#">
+            <strong>+</strong>
+        </a>
+    </div>
