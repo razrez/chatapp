@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyChat.Data;
@@ -23,7 +24,7 @@ public class RoomsController : Controller
         _signInManager = signInManager;
         _applicationContext = applicationContext;
     }
-    // GET
+    
     // просто отображаются все комнаты
     public IActionResult Index()
     {
@@ -79,31 +80,29 @@ public class RoomsController : Controller
             await _applicationContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        ModelState.AddModelError("", "Неправильный логин и (или) пароль");
         return View(roomModel);
     }
 
     // удаление комнаты через индекс
     [HttpPost]
-    public async Task<IActionResult> Delete(int id) //room-id
+    public IActionResult Delete(int id) //room-id
     {
         if (!_signInManager.IsSignedIn(User))
         {
            return RedirectToAction("Login", "Account");
         }
-        var currentRoom = await _applicationContext.Rooms.FindAsync(id);
-        var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
-        if (currentUser.Id.Equals(currentRoom.AdminId))
+        
+        var currentRoom = _applicationContext.Rooms.Find(id);
+        var currentUser = _applicationContext.Users.First(us => us.UserName == User.Identity.Name);
+
+        if (currentRoom.AdminId == currentUser.Id)
         {
             _applicationContext.Rooms.Remove(currentRoom);
-            var res = _applicationContext.SaveChangesAsync();
-            if (!res.IsCompletedSuccessfully) return RedirectToAction("Index");
-        }
-        else
-        {
-            return Content("YOU ARE NOT A ROOM-ADMIN!!");
+            _applicationContext.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        return Content("something has gone wrong...");
+        return Content("ACCESS DENIED");
+
     }
 }
