@@ -19,5 +19,13 @@ public class ApplicationContext : IdentityDbContext<User>
         base.OnModelCreating(builder);
         builder.Entity<RoomUser>()
             .HasKey(x => new { x.RoomId, IdentityUser = x.UserId });
+
+        builder.Entity<Message>()
+            .HasKey(k => k.Id);
+
+        /*builder.Entity<Message>()
+            .HasOne<User>(u => u.User)
+            .WithMany(m => m.Messages)
+            .HasForeignKey(u => new { u.UserId,  });*/
     }
 }

@@ -5,7 +5,7 @@
 }
 
 <form method="post" asp-controller="Chat" asp-action="Send">
-    <input type="hidden" asp-for="UserName" value="@User.Identity.Name" id="userInput" />
+    <input type="hidden" asp-for="Name" value="@User.Identity.Name" id="userInput" />
     <div class="form-group">
         <label asp-for="Text">Message</label><br/>
         <input asp-for="Text" class="form-control" type="text" id="messageInput"/>

@@ -110,13 +110,12 @@ public class RoomsController : Controller
     [HttpPost]
     public async Task<IActionResult> Send (int roomId, string message)
     {
-        var sender = await _userManager.GetUserAsync(User);
+        var sender = await _userManager.FindByNameAsync(User.Identity.Name);
         var currentRoom = await _applicationContext.Rooms.FindAsync(roomId);
+        //return Content($"{currentRoom.Id} {sender.UserName}: {message}");
+        await _applicationContext.AddAsync(new Message(){Name = sender.Login, Room = currentRoom, Text = message, User = sender});
+        await _applicationContext.SaveChangesAsync();
 
-        return Content($"{roomId} {User.Identity.Name}: {message}");
-        /*var messdb = new Message(){UserName = sender.UserName, Text = message, Sender = sender, Room=currentRoom};
-        await _applicationContext.Messages.AddAsync(messdb);
-        var res = await _applicationContext.SaveChangesAsync();
-        return View("Join",await _applicationContext.Rooms.FindAsync(roomId));*/
+        return View("Join", currentRoom);
     }
 }

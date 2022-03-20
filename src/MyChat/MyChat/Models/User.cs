@@ -9,7 +9,7 @@ namespace MyChat.Models
         
         public User()
         {
-            Messages = new HashSet<Message>();
+            Messages = new List<Message>();
             RoomUsers = new List<RoomUser>();
         }
         public virtual ICollection<Message> Messages { get; set; }

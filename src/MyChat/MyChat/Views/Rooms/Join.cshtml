@@ -17,16 +17,26 @@
     @foreach (var message in @Model.Messages)
     {
         <div class="message">
-            <header>@message.UserName:</header>
+            <header>@message.Name:</header>
             <p>@message.Text</p>
             <footer>@message.When</footer>
         </div>
     }
 </div>
-<form asp-action="Send" method="post">
+<form asp-action="Send" method="post" asp-controller="Rooms">
     <div class="chat-input">
-        <input type="hidden" name="roomId" value="@Model.">
-        <input type="text" name="message">
+        <input type="hidden" name="roomId" value="@Model.Id">
+        <input type="text" name="message" required="required">
         <button type="submit" >Send</button>
     </div>
 </form>
+@*<form method="post" asp-controller="Chat" asp-action="Send">
+    <input type="hidden" asp-for="UserName" value="@User.Identity.Name" id="userInput" />
+    <div class="form-group">
+        <label asp-for="Text">Message</label><br/>
+        <input asp-for="Text" class="form-control" type="text" id="messageInput"/>
+    </div>
+    <div class="form-group">
+        <input type="submit" id="sendButton" value="Send Message" class="btn btn-primary"/>
+    </div>
+</form>*@

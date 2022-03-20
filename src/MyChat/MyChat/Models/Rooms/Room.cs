@@ -9,7 +9,6 @@ namespace MyChat.Models
         public string AdminId { get; set; } //можно потом сделать форин кей,
                                           //но хз как логика работать будет
                                           //при выходе админа из комнаты может дропнуться вся комната
-        
         public Room()
         {
             Messages = new List<Message>();
