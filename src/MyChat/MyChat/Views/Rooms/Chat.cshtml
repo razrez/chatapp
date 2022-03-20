@@ -13,7 +13,32 @@
     </span>"
 </h2>
 
-<div class="chat-body">
+<div class="main">
+    @*@if(User.Identity.IsAuthenticated){
+    <vc:room></vc:room>
+    }*@
+    <div class="chat">
+        <div class="chat-body">
+            @foreach (var message in @Model.Messages)
+            {
+                <div class="message">
+                    <header>@message.Name:</header>
+                    <p>@message.Text</p>
+                    <footer>@message.When</footer>
+                </div>
+            }
+        </div>
+
+        <div class="chat-input">
+            <form asp-action="Send" method="post" asp-controller="Rooms">
+                <input type="hidden" name="roomId" value="@Model.Id">
+                <input type="text" name="message" required="required">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+@*<div class="chat-body">
     @foreach (var message in @Model.Messages)
     {
         <div class="message">
@@ -23,13 +48,14 @@
         </div>
     }
 </div>
-<form asp-action="Send" method="post" asp-controller="Rooms">
-    <div class="chat-input">
+
+<div class="chat-input">
+    <form asp-action="Send" method="post" asp-controller="Rooms">
         <input type="hidden" name="roomId" value="@Model.Id">
         <input type="text" name="message" required="required">
-        <button type="submit" >Send</button>
-    </div>
-</form>
+        <button type="submit">Send</button>
+    </form>
+</div>*@
 @*<form method="post" asp-controller="Chat" asp-action="Send">
     <input type="hidden" asp-for="UserName" value="@User.Identity.Name" id="userInput" />
     <div class="form-group">

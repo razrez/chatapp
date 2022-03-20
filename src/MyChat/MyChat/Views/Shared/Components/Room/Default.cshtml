@@ -2,7 +2,7 @@
 @*пойдет потом в сайд меню*@
 <div class="side-menu">
         @foreach(var room in Model){
-        <a class="room-button" asp-controller="Rooms" asp-action="Join" asp-route-id="@room.Id">
+        <a class="room-button" asp-controller="Rooms" asp-action="JoinRoom" asp-route-id="@room.Id">
             @room.Name
         </a>
         }

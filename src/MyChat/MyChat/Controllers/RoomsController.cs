@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,22 +33,34 @@ public class RoomsController : Controller
         return View(rooms);
     }
     //join(post), leave, create(get,post)
-
+    [HttpGet("{id:int}")]
+    public IActionResult Chat(int id)
+    {
+        var roomWithMessages = _applicationContext.Rooms
+            .Include(x => x.Messages)
+            .FirstOrDefault(x => x.Id == id);
+        return View(roomWithMessages);
+    }
+    
     // логика приссоединения к комнате с выводом сообщений в ней
     [HttpPost]
-    public async Task<IActionResult> Join(int roomId)
+    public async Task<IActionResult> JoinRoom(int roomId)
     {
         if (User.Identity.IsAuthenticated)
         {
             var currentUser = await _userManager.FindByNameAsync(User.Identity.Name); // берем из Identity
-            var currentRoom = await _applicationContext.Rooms.FindAsync(roomId);
+            //var currentRoom = await _applicationContext.Rooms.FindAsync(roomId);
+            //получим нужную комнату с сообщениями
+            /*var roomWithMessages = _applicationContext.Rooms
+                .Include(x => x.Messages)
+                .FirstOrDefault(x => x.Id == roomId);*/
             
             // просто вход в комнату
             var roomUsers = await _applicationContext.RoomUsers.ToListAsync();
             var roomUser = roomUsers.FirstOrDefault(s => s.UserId == currentUser.Id && s.RoomId == roomId);
             if (roomUser != null)
             {
-                return View(currentRoom);
+                return RedirectToAction("Chat", "Rooms", new { id = roomId });
             }
 
             //добавление нового юзера в комнату
@@ -55,7 +68,7 @@ public class RoomsController : Controller
             await _applicationContext.RoomUsers.AddAsync(user);
             await _applicationContext.SaveChangesAsync();
 
-            return View(currentRoom);
+            return RedirectToAction("Chat", "Rooms", new { id = roomId });
         }
        
         return RedirectToAction("Login","Account");
@@ -115,7 +128,11 @@ public class RoomsController : Controller
         //return Content($"{currentRoom.Id} {sender.UserName}: {message}");
         await _applicationContext.AddAsync(new Message(){Name = sender.Login, Room = currentRoom, Text = message, User = sender});
         await _applicationContext.SaveChangesAsync();
+        
+        var roomWithMessages = _applicationContext.Rooms
+            .Include(x => x.Messages)
+            .FirstOrDefault(x => x.Id == roomId);
 
-        return View("Join", currentRoom);
+        return RedirectToAction("Chat", "Rooms", new { id = roomId });
     }
 }

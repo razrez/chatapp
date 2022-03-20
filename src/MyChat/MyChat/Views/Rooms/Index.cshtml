@@ -21,9 +21,9 @@
                 @*<form method="post" asp-action="Join" asp-controller="Rooms">
                     <a class="btn btn-outline-primary btn-sm img-thumbnail shadow" asp-action="Join">join</a>
                 </form>*@
-                <form asp="Join" method="post">
+                <form asp="JoinRoom" method="post">
                     <input type="hidden" name="roomId" value="@room.Id" />
-                    <button type="submit" class="btn btn-outline-primary btn-sm img-thumbnail shadow" asp-action="Join">join</button>
+                    <button type="submit" class="btn btn-outline-primary btn-sm img-thumbnail shadow" asp-action="JoinRoom">join</button>
                 </form>
             </td>
             <td>
