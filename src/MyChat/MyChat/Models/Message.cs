@@ -14,6 +14,9 @@ public class Message
     
     public string UserId { get; set; }
     public virtual User Sender { get; set; }
+    
+    public int RoomId { get; set; }
+    public Room Room { get; set; }
 
     public Message()
     {

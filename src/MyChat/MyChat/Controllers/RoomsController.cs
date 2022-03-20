@@ -105,4 +105,18 @@ public class RoomsController : Controller
         return Content("ACCESS DENIED");
 
     }
+    
+    // отправка сообщения после приссоединения
+    [HttpPost]
+    public async Task<IActionResult> Send (int roomId, string message)
+    {
+        var sender = await _userManager.GetUserAsync(User);
+        var currentRoom = await _applicationContext.Rooms.FindAsync(roomId);
+
+        return Content($"{roomId} {User.Identity.Name}: {message}");
+        /*var messdb = new Message(){UserName = sender.UserName, Text = message, Sender = sender, Room=currentRoom};
+        await _applicationContext.Messages.AddAsync(messdb);
+        var res = await _applicationContext.SaveChangesAsync();
+        return View("Join",await _applicationContext.Rooms.FindAsync(roomId));*/
+    }
 }

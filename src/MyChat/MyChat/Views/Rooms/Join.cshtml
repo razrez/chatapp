@@ -23,8 +23,10 @@
         </div>
     }
 </div>
-
-<div class="chat-input">
-    <input type="text">
-    <button>Send</button>
-</div>
+<form asp-action="Send" method="post">
+    <div class="chat-input">
+        <input type="hidden" name="roomId" value="@Model.">
+        <input type="text" name="message">
+        <button type="submit" >Send</button>
+    </div>
+</form>
