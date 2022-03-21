@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(5,0,1,0.32)">
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgba(5,0,1,0.32); box-shadow: #b6d4fe">
           <div class="container-fluid">
             <a class="navbar-brand" asp-controller="Home" asp-action="Index">Starter Page</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,6 +18,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <div class="spinner-grow" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-light" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-dark" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" asp-action="Index" asp-controller="Rooms">Rooms</a>
                 </li>
@@ -41,7 +50,7 @@
               </ul>
               <form class="d-flex">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <button class="btn btn-outline-danger" type="submit">Search</button>
               </form>
             </div>
           </div>
@@ -53,10 +62,23 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - MyChat - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+    <footer class="border-top footer text-muted" style="max-height: 25rem">
+        <footer class="text-center text-white" style="background-color: #031521;">
+            <!-- Copyright -->
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+              <p class="d-flex justify-content-center align-items-center">
+                <span class="me-3" style="color: red">
+                  <a type="submit" class="btn btn-outline-danger btn-rounded" asp-controller="Account" asp-action="Login">
+                    log in ^^
+                  </a>
+                  <a type="submit" class="btn btn-outline-danger btn-rounded" asp-controller="Account" asp-action="Register">
+                    Sign up!
+                  </a>
+                </span>
+              </p>
+            </div>
+            <!-- Copyright -->
+        </footer>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

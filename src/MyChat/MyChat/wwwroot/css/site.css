@@ -37,6 +37,7 @@ body {
   box-shadow: 0 1px 3px 1px rgba(15, 39, 82, 0.8);
   text-align: center;
 }
+
 .btn-primary{
   background-color: black;
   color: #bb2d3b;
@@ -76,8 +77,6 @@ body {
   overflow: auto;
   color: aliceblue;
 }
-
-.chat-body {}
 
 .message {
   display: flex;
