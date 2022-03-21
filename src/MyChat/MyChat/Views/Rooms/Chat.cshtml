@@ -5,10 +5,10 @@
 }
 
 <h2>
-    <span style="background-color:slategrey; color: whitesmoke">
+    <span style="color: whitesmoke">
         @User.Identity.Name
     </span>, welcome to the room "
-    <span style="background-color:slategrey; color: whitesmoke">
+    <span style=" color: whitesmoke">
         @Model.Name
     </span>"
 </h2>
@@ -32,8 +32,8 @@
         <div class="chat-input">
             <form asp-action="Send" method="post" asp-controller="Rooms">
                 <input type="hidden" name="roomId" value="@Model.Id">
-                <input type="text" name="message" required="required">
-                <button type="submit">Send</button>
+                <input type="text" class="text-dark " name="message" required="required">
+                <button type="submit" class="btn-dark">Send</button>
             </form>
         </div>
     </div>

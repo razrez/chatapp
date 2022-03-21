@@ -16,7 +16,8 @@ html {
 
 body {
   margin-bottom: 60px;
-  background-color: #0b1322d4;
+  color: rgba(255, 0, 0, 0.74);
+  background-color: rgba(2, 3, 7, 0.83);
 }
 
 
@@ -25,7 +26,7 @@ body {
 }
 
 .room-button {
-  color: white;
+  color: #e11515;
   text-decoration: none;
   display: flex;
   justify-content: center;
@@ -33,11 +34,23 @@ body {
   margin: 0.75rem 1rem 0;
   height: 68px;
   border-radius: 5px;
-  box-shadow: 0 1px 3px 1px #333;
-  background-color: #57446b;
+  box-shadow: 0 1px 3px 1px rgba(15, 39, 82, 0.8);
   text-align: center;
 }
+.btn-primary{
+  background-color: black;
+  color: #bb2d3b;
+  border-color: #bb2d3b;
+  margin-left: 1rem;
+  position: running(dadad);
+}
+.room-button {
+  background-color: rgba(2, 2, 5, 0.83);
+}
 
+.room-button > a {
+  color: black;
+}
 .room-button > strong {
   font-size: 36px;
 }
@@ -55,13 +68,16 @@ body {
 }
 
 .chat-body {
-  background-color: #eee;
+  background-color: #800101;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   padding-bottom: 1rem;
   overflow: auto;
+  color: aliceblue;
 }
+
+.chat-body {}
 
 .message {
   display: flex;
@@ -87,16 +103,16 @@ body {
   flex-grow: 5;
 }
 .message > footer {
-  min-width: 60px;
+  min-width: 30px;
   text-align: center;
 }
 
 .chat-input {
-  background-color: #443554;
+  background-color: rgba(24, 24, 24, 0.36);
   min-height: 70px;
   max-height: 70px;
   z-index: 25;
-  box-shadow: 0 -1px 2px 0 #333;
+  box-shadow: 0 -1px 2px 0 #500303;
   display: flex;
   flex-direction: row;
   padding: 1rem;

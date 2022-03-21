@@ -50,6 +50,7 @@ namespace MyChat.Controllers
             return View(model);
         }
         
+        
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl = null)
         {

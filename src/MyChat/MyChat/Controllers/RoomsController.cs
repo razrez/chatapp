@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,7 @@ public class RoomsController : Controller
     //join(post), leave, create(get,post)
     //отображение чата
     [HttpGet("/rooms/{id:int}")]
+    [Authorize]
     public IActionResult Chat(int id)
     {
         var roomWithMessages = _applicationContext.Rooms
