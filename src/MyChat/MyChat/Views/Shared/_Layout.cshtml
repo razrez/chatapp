@@ -64,20 +64,21 @@
 
     <footer class="border-top footer text-muted" style="max-height: 25rem">
         <footer class="text-center text-white" style="background-color: #031521;">
-            <!-- Copyright -->
             <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
               <p class="d-flex justify-content-center align-items-center">
                 <span class="me-3" style="color: red">
-                  <a type="submit" class="btn btn-outline-danger btn-rounded" asp-controller="Account" asp-action="Login">
-                    log in ^^
-                  </a>
+                  @if (!User.Identity.IsAuthenticated)
+                  {
+                    <a type="submit" class="btn btn-outline-danger btn-rounded" asp-controller="Account" asp-action="Login">
+                      log in ^^
+                    </a>
+                  }
                   <a type="submit" class="btn btn-outline-danger btn-rounded" asp-controller="Account" asp-action="Register">
                     Sign up!
                   </a>
                 </span>
               </p>
             </div>
-            <!-- Copyright -->
         </footer>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
