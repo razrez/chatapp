@@ -6,10 +6,12 @@
     }
 </style>
 
-@Html.ActionLink("create new room", "Create",
-    "Rooms", null,
-    new {@class = "btn btn-outline-success btn-sm img-thumbnail shadow"})
-<br/><br/>
+<div style="flex: auto; margin-top: 1rem">
+    @Html.ActionLink("create new room", "Create",
+        "Rooms", null,
+        new {@class = "btn btn-outline-success btn-sm img-thumbnail shadow " })
+</div>
+
 <h2>Cписок доступных комнат</h2>
 <table class="table table-hover table-secondary img-thumbnail shadow small ali" >
     <tr><th>Room-name</th><th/><th/></tr>

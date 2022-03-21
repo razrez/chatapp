@@ -15,7 +15,7 @@
  
 @if(User.Identity.IsAuthenticated)
 {
-    <h1>Wellcum, @User.Identity.Name</h1>
+    <h1 style="margin-left: 1rem;">Wellcum, @User.Identity.Name</h1>
  
     <h2>
         <form method="post" asp-controller="Account" asp-action="Logout">
@@ -29,7 +29,7 @@ else
 {
 
     <div class="myDiv">
-        @Html.ActionLink("log in", "Login", "Account", null, new {@class = "btn btn-success"})
+        @Html.ActionLink("log in", "Login", "Account", null, new {@class = "btn btn-primary"})
         @Html.ActionLink("sign up", "Register", "Account", null, new {@class = "btn btn-primary"})
     </div>
     
