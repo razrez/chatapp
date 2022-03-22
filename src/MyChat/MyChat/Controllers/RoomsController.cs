@@ -111,7 +111,7 @@ public class RoomsController : Controller
         }
         
         var currentRoom = _applicationContext.Rooms.Find(id);
-        var currentUser = _applicationContext.Users.First(us => us.UserName == User.Identity.Name);
+        var currentUser = _applicationContext.Users.First(us => us.UserName == User.Identity!.Name);
 
         if (currentRoom.AdminId == currentUser.Id)
         {
@@ -131,7 +131,7 @@ public class RoomsController : Controller
         var sender = await _userManager.FindByNameAsync(User.Identity.Name);
         var currentRoom = await _applicationContext.Rooms.FindAsync(roomId);
         //return Content($"{currentRoom.Id} {sender.UserName}: {message}");
-        await _applicationContext.AddAsync(new Message(){Name = sender.Login, Room = currentRoom, Text = message, User = sender});
+        await _applicationContext.AddAsync(new Message(){Name = sender.Login, Room = currentRoom!, Text = message, User = sender});
         await _applicationContext.SaveChangesAsync();
         
         /*var roomWithMessages = _applicationContext.Rooms
