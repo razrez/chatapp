@@ -19,7 +19,7 @@ public class RoomViewComponent : ViewComponent
     public IViewComponentResult Invoke()
     {
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        
+        var user = User;
         var chats = _ctx.RoomUsers
             .Include(x => x.Room)
             .Where(x => x.UserId == userId

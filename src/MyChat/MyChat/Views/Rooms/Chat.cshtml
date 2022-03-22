@@ -5,7 +5,7 @@
 }
 
 <h2>
-    <span style="color: whitesmoke">@User.Identity.Name</span>, welcome to the room "<span style=" color: whitesmoke">@Model.Name</span>"
+    <span style="color: whitesmoke">@User.Identity?.Name</span>, welcome to the room "<span style=" color: whitesmoke">@Model?.Name</span>"
 </h2>
 
 <div class="main">
@@ -14,7 +14,7 @@
     }*@
     <div class="chat">
         <div class="chat-body">
-            @foreach (var message in @Model.Messages)
+            @foreach (var message in @Model?.Messages)
             {
                 <div class="message">
                     <header>@message.Name:</header>
@@ -33,31 +33,6 @@
         </div>
     </div>
 </div>
-@*<div class="chat-body">
-    @foreach (var message in @Model.Messages)
-    {
-        <div class="message">
-            <header>@message.Name:</header>
-            <p>@message.Text</p>
-            <footer>@message.When</footer>
-        </div>
-    }
-</div>
+<script>
 
-<div class="chat-input">
-    <form asp-action="Send" method="post" asp-controller="Rooms">
-        <input type="hidden" name="roomId" value="@Model.Id">
-        <input type="text" name="message" required="required">
-        <button type="submit">Send</button>
-    </form>
-</div>*@
-@*<form method="post" asp-controller="Chat" asp-action="Send">
-    <input type="hidden" asp-for="UserName" value="@User.Identity.Name" id="userInput" />
-    <div class="form-group">
-        <label asp-for="Text">Message</label><br/>
-        <input asp-for="Text" class="form-control" type="text" id="messageInput"/>
-    </div>
-    <div class="form-group">
-        <input type="submit" id="sendButton" value="Send Message" class="btn btn-primary"/>
-    </div>
-</form>*@
+</script>

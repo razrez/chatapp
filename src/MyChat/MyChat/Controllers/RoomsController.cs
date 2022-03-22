@@ -33,10 +33,12 @@ public class RoomsController : Controller
         var rooms = _applicationContext.Rooms.ToList();
         return View(rooms);
     }
+    
     //join(post), leave, create(get,post)
+    
     //отображение чата
+    //[Authorize]
     [HttpGet("/rooms/{id:int}")]
-    [Authorize]
     public IActionResult Chat(int id)
     {
         var roomWithMessages = _applicationContext.Rooms
@@ -132,9 +134,9 @@ public class RoomsController : Controller
         await _applicationContext.AddAsync(new Message(){Name = sender.Login, Room = currentRoom, Text = message, User = sender});
         await _applicationContext.SaveChangesAsync();
         
-        var roomWithMessages = _applicationContext.Rooms
+        /*var roomWithMessages = _applicationContext.Rooms
             .Include(x => x.Messages)
-            .FirstOrDefault(x => x.Id == roomId);
+            .FirstOrDefault(x => x.Id == roomId);*/
 
         return RedirectToAction("Chat", "Rooms", new { id = roomId });
     }
