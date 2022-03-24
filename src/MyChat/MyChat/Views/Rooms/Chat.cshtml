@@ -8,30 +8,27 @@
     <span style="color: whitesmoke">@User.Identity?.Name</span>, welcome to the room "<span style=" color: whitesmoke">@Model?.Name</span>"
 </h2>
 
-<div class="main">
-    @*@if(User.Identity.IsAuthenticated){
-    <vc:room></vc:room>
-    }*@
-    <div class="chat">
-        <div class="chat-body">
-            @foreach (var message in @Model?.Messages)
-            {
-                <div class="message">
-                    <header>@message.Name:</header>
-                    <p>@message.Text</p>
-                    <footer>@message.When</footer>
-                </div>
-            }
-        </div>
-
-        <div class="chat-input">
-            <form asp-action="Send" method="post" asp-controller="Rooms">
-                <input type="hidden" name="roomId" value="@Model.Id">
-                <input type="text" class="text-dark " name="message" required="required">
-                <button type="submit" class="btn-dark">Send</button>
-            </form>
-        </div>
+@*@if(User.Identity.IsAuthenticated){
+<vc:room></vc:room>
+}*@
+<div class="chat">
+    <div class="chat-body">
+        @foreach (var message in @Model!.Messages)
+        {
+            <div class="message">
+                <header>@message.Name:</header>
+                <p>@message.Text</p>
+                <footer>@message.When</footer>
+            </div>
+        }
     </div>
+
+    <form asp-action="Send" method="post" asp-controller="Rooms" class="chat-input">
+        <input type="hidden" name="roomId" value="@Model.Id">
+        <input type="text" class="text-dark " name="message" required="required">
+        <button type="submit" class="btn-dark">Send</button>
+    </form>
+
 </div>
 @section Scripts {
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
