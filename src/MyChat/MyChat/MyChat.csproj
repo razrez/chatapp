@@ -20,4 +20,57 @@
     <Folder Include="Views\Chat" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\CHANGELOG.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\dist\axios.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\dist\axios.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\dist\axios.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\dist\axios.min.map" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\index.d.ts" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\index.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\adapters\http.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\adapters\README.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\adapters\xhr.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\axios.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\cancel\Cancel.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\cancel\CancelToken.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\cancel\isCancel.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\core\Axios.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\core\buildFullPath.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\core\createError.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\core\dispatchRequest.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\core\enhanceError.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\core\InterceptorManager.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\core\mergeConfig.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\core\README.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\core\settle.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\core\transformData.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\defaults\index.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\defaults\transitional.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\env\data.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\env\README.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\bind.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\buildURL.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\combineURLs.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\cookies.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\deprecatedMethod.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\isAbsoluteURL.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\isAxiosError.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\isURLSameOrigin.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\normalizeHeaderName.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\parseHeaders.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\README.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\spread.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\toFormData.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\helpers\validator.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\lib\utils.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\LICENSE" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\package.json" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\README.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\SECURITY.md" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\tsconfig.json" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\tslint.json" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\axios\UPGRADE_GUIDE.md" />
+  </ItemGroup>
+
 </Project>

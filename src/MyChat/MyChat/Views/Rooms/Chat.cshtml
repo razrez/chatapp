@@ -26,13 +26,51 @@
     <form asp-action="Send" method="post" asp-controller="Rooms" class="chat-input">
         <input type="hidden" name="roomId" value="@Model.Id">
         <input type="text" class="text-dark " name="message" required="required">
-        <button type="submit" class="btn-dark">Send</button>
+        <button type="submit" class="btn-dark send-button">Send</button>
     </form>
 
 </div>
 @section Scripts {
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/js/axios/dist/axios.min.js"></script>
     <script>
-    
+        var connection = new signalR.HubConnectionBuilder()
+                                    .withUrl("/chatHub")
+                                    .build();
+        var _connectionId = '';
+        connection.on("ReceiveMessage", function (data){
+            console.log(data);
+        })
+        
+        var joinRoom = function (){
+            fetch("https://localhost:7096/Chat/JoinRoom/"+_connectionId+"/@Model.Name", {
+                method: 'POST'               
+            })
+                .then(res => {
+                    console.log("Room Joined", res);
+                })
+                .catch(err => {
+                    console.log("FAILED!", err);
+                })
+        }
+        
+        connection.start()
+                .then(function () {
+                    connection.invoke('joinRoom', '@Model.Id');
+                })
+                .catch(function (err) {
+                    console.log(err)
+                })
+        /*connection.start()
+                    .then(function (){
+                        connection.invoke('getConnectionId')
+                            .then(function (connectionId){
+                                _connectionId = connectionId
+                                joinRoom();
+                            })
+                    })
+                    .catch(function (err){
+                        console.log(err)
+                    })*/
     </script>
 }

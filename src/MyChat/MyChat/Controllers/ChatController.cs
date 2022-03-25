@@ -46,10 +46,14 @@ public class ChatController : Controller
         var sender = await _userManager.FindByNameAsync(User.Identity?.Name);
         var currentRoom = await ctx.Rooms.FindAsync(roomId);
         //return Content($"{currentRoom.Id} {sender.UserName}: {message}");
-        await ctx.AddAsync(new Message(){Name = sender.Login, Room = currentRoom!, Text = message, User = sender});
+
+        var Mes = new Message() { Name = sender.Login, Room = currentRoom!, Text = message, User = sender };
+        //await ctx.AddAsync(new Message(){Name = sender.Login, Room = currentRoom!, Text = message, User = sender});
+        await ctx.AddAsync(Mes);
         await ctx.SaveChangesAsync();
+        
         await _chat.Clients.Group(roomName)
-            .SendAsync("ReceiveMessage",message);
+            .SendAsync("ReceiveMessage", Mes);
         return Ok();
     }
    
