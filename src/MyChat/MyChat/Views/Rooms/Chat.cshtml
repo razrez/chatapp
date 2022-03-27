@@ -23,17 +23,20 @@
         }
     </div>
 
-    <form asp-action="Send" method="post" asp-controller="Rooms" class="chat-input">
-        <input type="hidden" name="roomId" value="@Model.Id">
-        <input type="text" class="text-dark " name="message" required="required">
-        <button type="submit" class="btn-dark send-button">Send</button>
+    <form asp-action="Send" method="post" asp-controller="Rooms" class="chat-input" onsubmit="sendMessage">
+        <input type="hidden" name="roomId" id="roomId" value="@Model.Id">
+        <input type="text" class="text-dark " name="message" id="message" required="required">
+        <input type="hidden" name="roomName" id="roomName" value="@Model.Name">
+        <button type="submit" class="btn-dark send-button" name="sendButton" id="sendButton">Send</button>
     </form>
 
 </div>
 @section Scripts {
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
-    <script src="~/js/axios/dist/axios.min.js"></script>
     <script>
+        //Disable the send button until connection is established.
+        document.getElementById("sendButton").disabled = true;
+        
         var connection = new signalR.HubConnectionBuilder()
                                     .withUrl("/chatHub")
                                     .build();
@@ -41,8 +44,16 @@
         connection.on("ReceiveMessage", function (data){
             console.log(data);
         })
+        /*connection.on("ReceiveMessage", function (user, message) {
+            var li = document.createElement("li");
+            document.getElementById("messagesList").appendChild(li);
+            // We can assign user-supplied strings to an element's textContent because it
+            // is not interpreted as markup. If you're assigning in any other way, you 
+            // should be aware of possible script injection concerns.
+            li.textContent = `${user} says ${message}`;
+        });*/
         
-        var joinRoom = function (){
+        /*var joinRoom = function (){
             fetch("https://localhost:7096/Chat/JoinRoom/"+_connectionId+"/@Model.Name", {
                 method: 'POST'               
             })
@@ -52,25 +63,41 @@
                 .catch(err => {
                     console.log("FAILED!", err);
                 })
-        }
+        }*/
         
         connection.start()
-                .then(function () {
-                    connection.invoke('joinRoom', '@Model.Id');
+            .then(function () {
+                document.getElementById("sendButton").disabled = false
+                .then(function() {
+                       connection.invoke('joinRoom', '@Model.Name')           
                 })
-                .catch(function (err) {
-                    console.log(err)
+            })
+            .catch(function (err) {
+                console.log(err)
+            })
+            
+        document.getElementById("sendButton").addEventListener("submit", function (event) {
+            var roomId = document.getElementById("roomId").value;
+            var message = document.getElementById("message").value;
+            var roomName = document.getElementById("roomName").value;
+            connection.invoke("SendMessage", roomId, message, roomName).catch(function (err) {
+                return console.error(err.toString());
+            });
+            event.preventDefault();
+        });
+            
+        /*var sendMessage = function (event){
+            event.preventDefault();//страница не обновляется
+            var data = new FormData(event.target);            
+            
+            connection.invoke('sendMessage', data)
+                .then(res => {
+                  console.log("Message Sent!") 
                 })
-        /*connection.start()
-                    .then(function (){
-                        connection.invoke('getConnectionId')
-                            .then(function (connectionId){
-                                _connectionId = connectionId
-                                joinRoom();
-                            })
-                    })
-                    .catch(function (err){
-                        console.log(err)
-                    })*/
+                .catch(err => {
+                    console.log("Failure to send message")
+                })
+        }*/
+       
     </script>
 }
