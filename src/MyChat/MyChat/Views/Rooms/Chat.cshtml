@@ -23,7 +23,7 @@
         }
     </div>
 
-    <form asp-action="Send" method="post" asp-controller="Rooms" class="chat-input" onsubmit="sendMessage">
+    <form asp-action="Send" method="post" asp-controller="Rooms" class="chat-input" onsubmit="submitFunc()">
         <input type="hidden" name="roomId" id="roomId" value="@Model.Id">
         <input type="text" class="text-dark " name="message" id="message" required="required">
         <input type="hidden" name="roomName" id="roomName" value="@Model.Name">
@@ -36,11 +36,22 @@
     <script>
         //Disable the send button until connection is established.
         document.getElementById("sendButton").disabled = true;
+        var submitFunc = function() {
+            document.getElementById("sendButton").addEventListener("submit", function (event) {
+                var roomId = document.getElementById("roomId").value;
+                var message = document.getElementById("message").value;
+                var roomName = document.getElementById("roomName").value;
+                connection.invoke("sendMessage", roomId, message, roomName).catch(function (err) {
+                    return console.error(err.toString());
+                });
+                event.preventDefault();
+            });
+        }
         
         var connection = new signalR.HubConnectionBuilder()
-                                    .withUrl("/chatHub")
-                                    .build();
-        var _connectionId = '';
+            .withUrl("/chatHub")
+            .build();
+        
         connection.on("ReceiveMessage", function (data){
             console.log(data);
         })
@@ -53,51 +64,14 @@
             li.textContent = `${user} says ${message}`;
         });*/
         
-        /*var joinRoom = function (){
-            fetch("https://localhost:7096/Chat/JoinRoom/"+_connectionId+"/@Model.Name", {
-                method: 'POST'               
-            })
-                .then(res => {
-                    console.log("Room Joined", res);
-                })
-                .catch(err => {
-                    console.log("FAILED!", err);
-                })
-        }*/
-        
         connection.start()
             .then(function () {
-                document.getElementById("sendButton").disabled = false
-                .then(function() {
-                       connection.invoke('joinRoom', '@Model.Name')           
-                })
+                document.getElementById("sendButton").disabled = false;
+                connection.invoke('joinRoom', '@Model.Name');     
             })
             .catch(function (err) {
                 console.log(err)
-            })
-            
-        document.getElementById("sendButton").addEventListener("submit", function (event) {
-            var roomId = document.getElementById("roomId").value;
-            var message = document.getElementById("message").value;
-            var roomName = document.getElementById("roomName").value;
-            connection.invoke("SendMessage", roomId, message, roomName).catch(function (err) {
-                return console.error(err.toString());
             });
-            event.preventDefault();
-        });
-            
-        /*var sendMessage = function (event){
-            event.preventDefault();//страница не обновляется
-            var data = new FormData(event.target);            
-            
-            connection.invoke('sendMessage', data)
-                .then(res => {
-                  console.log("Message Sent!") 
-                })
-                .catch(err => {
-                    console.log("Failure to send message")
-                })
-        }*/
-       
+
     </script>
 }

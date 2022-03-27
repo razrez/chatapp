@@ -35,8 +35,8 @@ namespace MyChat.SignalR.Hubs
             await ctx.AddAsync(Mes);
             await ctx.SaveChangesAsync();
         
-            /*await Clients.Group(roomName)
-                .SendAsync("ReceiveMessage", Mes);*/
+            await Clients.Group(roomName)
+                .SendAsync("ReceiveMessage", Mes.Text);
         }
     }
 }
