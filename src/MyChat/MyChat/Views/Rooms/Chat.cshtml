@@ -5,7 +5,7 @@
 }
 
 <h2>
-    <span style="color: whitesmoke">@User.Identity?.Name</span>, welcome to the room "<span style=" color: whitesmoke">@Model?.Name</span>"
+    <span style="text-decoration-line: underline;">@User.Identity?.Name</span>, welcome to the room "<span style="text-decoration-line: underline;">@Model?.Name</span>"
 </h2>
 
 @*@if(User.Identity.IsAuthenticated){
@@ -23,10 +23,10 @@
         }
     </div>
 
-    <form asp-action="Send" method="post" asp-controller="Rooms" class="chat-input" onsubmit="submitFunc()">
+    <form asp-action="Send" method="post" asp-controller="Rooms" class="chat-input">
         <input type="hidden" name="roomId" id="roomId" value="@Model.Id">
-        <input type="text" class="text-dark " name="message" id="message" required="required">
         <input type="hidden" name="roomName" id="roomName" value="@Model.Name">
+        <input type="text" class="text-dark " name="message" id="message" required="required">
         <button type="submit" class="btn-dark send-button" name="sendButton" id="sendButton">Send</button>
     </form>
 
@@ -36,42 +36,69 @@
     <script>
         //Disable the send button until connection is established.
         document.getElementById("sendButton").disabled = true;
-        var submitFunc = function() {
-            document.getElementById("sendButton").addEventListener("submit", function (event) {
-                var roomId = document.getElementById("roomId").value;
-                var message = document.getElementById("message").value;
-                var roomName = document.getElementById("roomName").value;
-                connection.invoke("sendMessage", roomId, message, roomName).catch(function (err) {
-                    return console.error(err.toString());
-                });
-                event.preventDefault();
-            });
-        }
         
-        var connection = new signalR.HubConnectionBuilder()
+        const connection = new signalR.HubConnectionBuilder()
             .withUrl("/chatHub")
             .build();
         
         connection.on("ReceiveMessage", function (data){
-            console.log(data);
+            let message = document.createElement("div")
+            message.classList.add('message')
+            
+            let header = document.createElement("header")
+            header.appendChild(document.createTextNode('name'))
+            
+            let p = document.createElement("p")
+            p.appendChild(document.createTextNode(data))
+            
+            let footer = document.createElement("footer")
+            footer.appendChild(document.createTextNode('now'))
+            
+            message.appendChild(header)
+            message.appendChild(p)
+            message.appendChild(footer)
+            
+            let body = document.querySelector('.chat-body')
+            body.append(message)
         })
-        /*connection.on("ReceiveMessage", function (user, message) {
-            var li = document.createElement("li");
-            document.getElementById("messagesList").appendChild(li);
-            // We can assign user-supplied strings to an element's textContent because it
-            // is not interpreted as markup. If you're assigning in any other way, you 
-            // should be aware of possible script injection concerns.
-            li.textContent = `${user} says ${message}`;
-        });*/
         
         connection.start()
             .then(function () {
                 document.getElementById("sendButton").disabled = false;
-                connection.invoke('joinRoom', '@Model.Name');     
+                connection.invoke('JoinRoom', '@Model.Name')
+                    .then(res => {
+                        console.log("RoomJoined", res);
+                    })
+                    .catch(function (err){
+                        console.log(err)
+                    })     
             })
             .catch(function (err) {
                 console.log(err)
             });
-
+        
+        document.getElementById("sendButton").addEventListener("click", function (event) {
+            event.preventDefault();
+            let message = document.getElementById("message").value
+            let roomName = document.getElementById("roomName").value
+            connection.invoke("SendMessage", message, roomName)
+                .catch(function (err) {
+                    console.log(err)
+                });
+        });
+        /*var clickFunc = function(event) {
+            var roomId = document.getElementById("roomId").value
+            var message = document.getElementById("message").value
+            var roomName = document.getElementById("roomName").value
+            /!*alert(roomId)
+            alert(message)
+            alert(roomName)*!/
+            connection.invoke("SendMessage", message)
+                .catch(err => {
+                    console.log("Failed to send message!",err)
+                })
+            event.preventDefault();
+        }*/
+        
     </script>
 }

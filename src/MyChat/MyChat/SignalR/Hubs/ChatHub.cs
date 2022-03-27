@@ -19,24 +19,24 @@ namespace MyChat.SignalR.Hubs
         {
             return Groups.AddToGroupAsync(Context.ConnectionId, roomName);
         }
-        public Task LeaveRoom(string roomId)
+        public Task LeaveRoom(string roomName)
         {
-            return Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
         }
 
-        public async Task SendMessage(int roomId, string message, string roomName, [FromServices] ApplicationContext ctx, [FromServices] UserManager<User> _userManager, [FromServices] User currentUser)
+        public async Task SendMessage(string message, string roomName)
         {
-            //var sender = await _userManager.FindByNameAsync(user.UserName);
+            /*//var sender = await _userManager.FindByNameAsync(user.UserName);
             var currentRoom = await ctx.Rooms.FindAsync(roomId);
             //return Content($"{currentRoom.Id} {sender.UserName}: {message}");
 
             var Mes = new Message() { Name = currentUser.Login, Room = currentRoom!, Text = message, User = currentUser };
             //await ctx.AddAsync(new Message(){Name = sender.Login, Room = currentRoom!, Text = message, User = sender});
             await ctx.AddAsync(Mes);
-            await ctx.SaveChangesAsync();
+            await ctx.SaveChangesAsync();*/
         
             await Clients.Group(roomName)
-                .SendAsync("ReceiveMessage", Mes.Text);
+                .SendAsync("ReceiveMessage", message);
         }
     }
 }
