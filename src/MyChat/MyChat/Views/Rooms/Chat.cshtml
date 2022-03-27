@@ -81,7 +81,8 @@
             event.preventDefault();
             let message = document.getElementById("message").value
             let roomName = document.getElementById("roomName").value
-            connection.invoke("SendMessage", message, roomName)
+            let roomId = document.getElementById("roomId").value
+            connection.invoke("SendMessage", message, roomName, roomId)
                 .catch(function (err) {
                     console.log(err)
                 });
