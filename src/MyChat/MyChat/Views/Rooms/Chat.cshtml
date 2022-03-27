@@ -41,18 +41,18 @@
             .withUrl("/chatHub")
             .build();
         
-        connection.on("ReceiveMessage", function (data){
+        connection.on("ReceiveMessage", function (msg, userName, when){
             let message = document.createElement("div")
             message.classList.add('message')
             
             let header = document.createElement("header")
-            header.appendChild(document.createTextNode('name'))
+            header.appendChild(document.createTextNode(userName+':'))
             
             let p = document.createElement("p")
-            p.appendChild(document.createTextNode(data))
+            p.appendChild(document.createTextNode(msg))
             
             let footer = document.createElement("footer")
-            footer.appendChild(document.createTextNode('now'))
+            footer.appendChild(document.createTextNode(when))
             
             message.appendChild(header)
             message.appendChild(p)
