@@ -38,7 +38,7 @@ namespace MyChat.SignalR.Hubs
         public async Task SendMessage(string message, string roomName, string roomId)
         {
             await Clients.Group(roomName)
-                .SendAsync("ReceiveMessage", message,Context.User?.Identity?.Name,DateTime.Now.ToString("dd/MM/yyyy h:mm:ss"));
+                .SendAsync("ReceiveMessage", message,Context.User?.Identity?.Name,DateTime.Now.ToString("h:mm:ss"));
             
             var sender = await _userManager.FindByNameAsync(Context.User?.Identity?.Name);
             var roomIdInt = Int32.Parse(roomId);
@@ -52,5 +52,10 @@ namespace MyChat.SignalR.Hubs
             
         }
 
+        public override async Task OnConnectedAsync()
+        {
+            await Clients.All.SendAsync("Notify", $"{Context.User?.Identity?.Name} here!");
+            await base.OnConnectedAsync();
+        }
     }
 }

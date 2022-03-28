@@ -29,7 +29,6 @@
         <input type="text" class="text-dark " name="message" id="message" required="required">
         <button type="submit" class="btn-dark send-button" name="sendButton" id="sendButton">Send</button>
     </form>
-
 </div>
 @section Scripts {
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
@@ -51,11 +50,35 @@
             let p = document.createElement("p")
             p.appendChild(document.createTextNode(msg))
             
+            
             let footer = document.createElement("footer")
             footer.appendChild(document.createTextNode(when))
             
             message.appendChild(header)
             message.appendChild(p)
+            message.appendChild(footer)
+            
+            let body = document.querySelector('.chat-body')
+            body.append(message)
+        })
+        
+        connection.on("Notify", function (msg){
+            let message = document.createElement("div")
+            message.classList.add('message')
+            
+            let header = document.createElement("header")
+            header.style.color = 'black'
+            header.appendChild(document.createTextNode('info:'))
+            
+            let i = document.createElement("i")
+            i.appendChild(document.createTextNode(msg))
+            i.style.color = 'black'
+            
+            let footer = document.createElement("footer")
+            footer.appendChild(document.createTextNode(''))
+            
+            message.appendChild(header)
+            message.appendChild(i)
             message.appendChild(footer)
             
             let body = document.querySelector('.chat-body')

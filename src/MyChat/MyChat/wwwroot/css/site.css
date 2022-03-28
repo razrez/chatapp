@@ -105,6 +105,10 @@ body {
   margin: 0;
   flex-grow: 5;
 }
+.message > .badge-primary {
+  margin: 0;
+  flex-grow: 5;
+}
 .message > footer {
   min-width: 30px;
   text-align: center;
