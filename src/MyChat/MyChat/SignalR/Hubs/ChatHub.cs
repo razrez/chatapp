@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,8 @@ namespace MyChat.SignalR.Hubs
     {
         private readonly ApplicationContext _applicationContext;
         private readonly UserManager<User> _userManager;
+
+        //key-connectionId; value-roomName
         public ChatHub(ApplicationContext applicationContext, UserManager<User> userManager)
         {
             _applicationContext = applicationContext;
@@ -26,10 +29,12 @@ namespace MyChat.SignalR.Hubs
         }*/
 
         public string GetConnectionId() => Context.ConnectionId;
-        public Task JoinRoom(string roomName)
+        public async Task JoinRoom(string roomName)
         {
-            return Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+            await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+            await Clients.Group(roomName).SendAsync("Notify", $"{Context.User?.Identity?.Name} here!");
         }
+        
         public Task LeaveRoom(string roomName)
         {
             return Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
@@ -41,7 +46,7 @@ namespace MyChat.SignalR.Hubs
                 .SendAsync("ReceiveMessage", message,Context.User?.Identity?.Name,DateTime.Now.ToString("h:mm:ss"));
             
             var sender = await _userManager.FindByNameAsync(Context.User?.Identity?.Name);
-            var roomIdInt = Int32.Parse(roomId);
+            var roomIdInt = int.Parse(roomId);
             var currentRoom = await _applicationContext.Rooms.FindAsync(roomIdInt);
             //return Content($"{currentRoom.Id} {sender.UserName}: {message}");
             
@@ -52,15 +57,16 @@ namespace MyChat.SignalR.Hubs
             
         }
 
-        public override async Task OnConnectedAsync()
+        /*public override async Task OnConnectedAsync()
         {
-            await Clients.All.SendAsync("Notify", $"{Context.User?.Identity?.Name} here!");
+            var vals = connections.GetValueOrDefault(Context.ConnectionId);
+            await Clients.All.SendAsync("Notify", $"{vals} here!");
             await base.OnConnectedAsync();
-        }
+        }*/
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            await Clients.All.SendAsync("Notify", $"{Context.User?.Identity?.Name} has left :|");
+            await Clients.Group("").SendAsync("Notify", $"{Context.User?.Identity?.Name} has left :|");
             await base.OnDisconnectedAsync(exception);
         }
     }

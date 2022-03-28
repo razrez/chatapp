@@ -22,6 +22,7 @@
             </div>
         }
     </div>
+    
 
     <form asp-action="Send" method="post" asp-controller="Rooms" class="chat-input">
         <input type="hidden" name="roomId" id="roomId" value="@Model.Id">
@@ -97,6 +98,7 @@
                     })     
             })
             .catch(function (err) {
+                connection.invoke('LeaveRoom', '@Model.Name')
                 console.log(err)
             });
         
@@ -110,19 +112,11 @@
                     console.log(err)
                 });
         });
-        /*var clickFunc = function(event) {
-            var roomId = document.getElementById("roomId").value
-            var message = document.getElementById("message").value
-            var roomName = document.getElementById("roomName").value
-            /!*alert(roomId)
-            alert(message)
-            alert(roomName)*!/
-            connection.invoke("SendMessage", message)
-                .catch(err => {
-                    console.log("Failed to send message!",err)
-                })
-            event.preventDefault();
-        }*/
+        
+        window.addEventListener('popstate', function (event) {
+        	// Log the state data to the console
+        	alert("test")
+        });
         
     </script>
 }
