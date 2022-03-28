@@ -57,5 +57,11 @@ namespace MyChat.SignalR.Hubs
             await Clients.All.SendAsync("Notify", $"{Context.User?.Identity?.Name} here!");
             await base.OnConnectedAsync();
         }
+
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            await Clients.All.SendAsync("Notify", $"{Context.User?.Identity?.Name} has left :|");
+            await base.OnDisconnectedAsync(exception);
+        }
     }
 }
