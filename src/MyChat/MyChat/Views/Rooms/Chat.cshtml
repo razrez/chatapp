@@ -23,13 +23,13 @@
         }
     </div>
     
-
     <form asp-action="Send" method="post" asp-controller="Rooms" class="chat-input">
         <input type="hidden" name="roomId" id="roomId" value="@Model.Id">
         <input type="hidden" name="roomName" id="roomName" value="@Model.Name">
         <input type="text" class="text-dark " name="message" id="message" required="required">
         <button type="submit" class="btn-dark send-button" name="sendButton" id="sendButton">Send</button>
     </form>
+    
 </div>
 @section Scripts {
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>

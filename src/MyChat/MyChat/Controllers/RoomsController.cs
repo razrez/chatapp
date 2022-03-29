@@ -140,4 +140,8 @@ public class RoomsController : Controller
 
         return RedirectToAction("Chat", "Rooms", new { id = roomId });
     }
+
+    [HttpGet("/test")]
+    public IActionResult Test() => View();
+
 }
