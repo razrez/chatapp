@@ -6,8 +6,7 @@
     <title>@ViewData["Title"] - MyChat</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/MyChat.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    @*<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">*@
 </head>
 <body>
     <header>
@@ -58,12 +57,11 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted" style="max-height: 25rem">
+    @*<footer class="border-top footer text-muted" style="max-height: 25rem">
         <footer class="text-center text-white" style="background-color: rgba(5,0,1,0.32);">
             <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
               <p class="d-flex justify-content-center align-items-center">
@@ -81,7 +79,7 @@
               </p>
             </div>
         </footer>
-    </footer>
+    </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Chat" />
-  </ItemGroup>
-
-  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\js\axios\CHANGELOG.md" />
     <_ContentIncludedByDefault Remove="wwwroot\js\axios\dist\axios.js" />
     <_ContentIncludedByDefault Remove="wwwroot\js\axios\dist\axios.map" />
