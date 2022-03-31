@@ -70,6 +70,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\css\Default.scss" />
     <None Include="wwwroot\css\Test.css" />
   </ItemGroup>
 
