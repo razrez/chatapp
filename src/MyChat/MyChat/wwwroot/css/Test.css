@@ -6,11 +6,12 @@
 }
 
 .chat-container{
-  top: 30%;
+  /*top: 123%;
   bottom: 10%;
   left: 10%;
-  right: 10%;
-  position:absolute;
+  right: 10%;*/
+  margin-top: 2%;
+  position: revert;
   overflow-y:auto;
   overflow-x:auto;
   
@@ -28,11 +29,6 @@
 }
 
 .chatbox{
-  position:relative;
-  top: auto;
-  bottom: auto;
-  left: auto;
-  right: auto;
   flex-grow: 1;
   flex-direction: row;
   background: #1d61c2;
