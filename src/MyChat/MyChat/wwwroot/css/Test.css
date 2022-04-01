@@ -52,15 +52,16 @@
   margin-bottom: 4px;
   border: 0;
   outline: none;
-  padding: 12px;
+  padding: 4px;
   background: rgb(28, 33, 47);
   width: 100%;
   font-family: "Segoe UI", Arial, sans-serif;
   color: #d7d1d1;
   font-weight: lighter;
   font-size: 16px;
-  border-bottom-left-radius: 30%;
-  border-bottom-right-radius: 30%;
+  border-radius: 15px;
+  /*border-bottom-left-radius: 30%;
+  border-bottom-right-radius: 30%;*/
   text-align: center;
   box-shadow: 3px 3px 6px 3px rgba(2, 2, 5, 0.16);
 }
@@ -166,6 +167,3 @@
   background: red;
 }
 /*на ::after можно повесить х(удаление из комнаты для админа)*/
-
-
-
