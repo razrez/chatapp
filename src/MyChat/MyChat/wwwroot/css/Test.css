@@ -18,11 +18,14 @@
   width: 100%;*/
   
   /*при масштабировании проявляется на скроллбаре*/
-  background-image: linear-gradient(to right, #1c00f2, #453f96);
+  /*background-image: linear-gradient(to right, #1c00f2, #453f96);*/
+  /*background: rgb(133, 134, 136);*/
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
+  border-radius: 3%;
+  box-shadow: 3px 2px 40px 3px rgba(2, 2, 5, 0.83);
 }
 
 ::placeholder{
@@ -30,25 +33,40 @@
 }
 
 .chatbox{
+  padding: 4px;
   flex-grow: 1;
   flex-direction: row;
-  background: #1d61c2;
+  background: rgb(34, 34, 37);
   width: 60%;
   min-width: 250px;
   display: flex;
+  border-radius: 2%;
+  box-shadow: 3px 2px 40px 3px rgba(2, 2, 5, 0.83);
+
 }
 .tester{
   flex: 1;
 }
 .tester input{
+  /*margin: 1rem 1rem;*/
+  margin-top: 1rem;
+  margin-bottom: 4px;
   border: 0;
   outline: none;
-  padding: 20px 40px;
-  background: #3874c9;
-  color: #fff;
+  padding: 12px;
+  background: rgb(28, 33, 47);
   width: 100%;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #d7d1d1;
+  font-weight: lighter;
   font-size: 16px;
-  font-weight: 100;
+  border-bottom-left-radius: 30%;
+  border-bottom-right-radius: 30%;
+  text-align: center;
+  box-shadow: 3px 3px 6px 3px rgba(2, 2, 5, 0.16);
+}
+.tester input:hover{
+  box-shadow: 1px 2px 15px 2px rgb(8, 9, 10);
 }
 .col-one{
   flex: 1;
@@ -57,40 +75,55 @@
   max-height: 600px;
   height: 30rem;
   overflow-y: auto;
-  
-}
+  }
 .col-one::-webkit-scrollbar {
   width: 1em;
 }
 .col-one::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgb(34, 70, 120);
 }
 .col-one::-webkit-scrollbar-thumb {
-  background-color: rgba(7, 53, 138, 0.4);
-  outline: 1px solid rgb(7, 128, 215);
+  background-color: rgb(28, 33, 47);
+  outline: 1px solid rgb(34, 70, 119);
 }
 
 .col-two {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 10%;
   flex-basis: 150px;
-  background: #3874c9;
+  background: #224679;
+  border-radius: 10%;
 }
 
 .msg-row{
   display: flex;
   align-items: center;
-  margin: 40px;
+  /*поковырял*/
+  margin: 12px;
+  padding-left: 20px;
 }
+
 .msg-text{
-  background: rgba(255,255,255,0.1);
-  padding: 20px 40px;
+  background: rgb(34, 70, 120);
+  padding: 10px 10px;
   border-radius: 8px;
   flex-basis: 80%;
   font-weight: 300;
+  /*              */
 }
 .msg-text h2{
+  font-family: -apple-system, emoji ;
   font-weight: 400;
-  font-size: 22px;
-  margin-bottom: 10px;
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+.msg-text p{
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #d7d1d1;
+  font-weight: lighter;
+  font-size: 16px;
+  margin-bottom: 2px;
 }
 .msg-img{
   width: 50px;
@@ -100,7 +133,6 @@
 .msg-row2{
   justify-content: flex-end;
 }
-
 
 .col-two h3{
   text-align: center;
@@ -113,7 +145,8 @@
 }
 .col-two ul li{
   padding: 5px 0;
-  font-size: x-small;
+  font-size: small;
+  font-family: "Mongolian Baiti", serif;
 }
 .col-two ul li::before{
   content: '';
