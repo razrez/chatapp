@@ -1,4 +1,5 @@
 ﻿@model MyChat.Models.Room
+<link rel="stylesheet" href="~/css/Test.css" />
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
@@ -11,25 +12,53 @@
 @*@if(User.Identity.IsAuthenticated){
 <vc:room></vc:room>
 }*@
-<div class="chat">
-    <div class="chat-body">
-        @foreach (var message in @Model!.Messages)
-        {
-            <div class="message">
-                <header>@message.Name:</header>
-                <p>@message.Text</p>
-                <footer>@message.When</footer>
+<div class="chat-container">
+    <div class="chatbox">
+        <div class="tester">
+            <div class="col-one">
+                @foreach (var message in @Model!.Messages)
+                {
+                    if (message.Name == Context.User.Identity?.Name)
+                    {
+                        <div class="msg-row">
+                            <div class="msg-text">
+                                <h2>@message.Name</h2>
+                                <p>@message.Text</p>
+                            </div>
+                            <img src="~/favicon.ico" class="msg-img" alt=""/>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="msg-row msg-row2">
+                            <img src="~/favicon.ico" class="msg-img" alt=""/>
+                            <div class="msg-text">
+                                <h2>@message.Name</h2>
+                                <p>@message.Text</p>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
-        }
+            
+            <form method="post" style="flex-direction: row" class="msg-input">
+                <input type="hidden" name="roomId" id="roomId" value="@Model.Id">
+                <input type="hidden" name="roomName" id="roomName" value="@Model.Name">
+                <input type="text"  placeholder="Type your message here..." name="message" id="message" required="required">
+                <button type="submit" class="button" name="sendButton" id="sendButton" >send</button>
+            </form>
+        </div>
+        <div class="col-two">
+            <h3>Friends List</h3>
+            <ul>
+                <li>John</li>
+                <li class="offline">Mia</li>
+                <li>Rob</li>
+                <li>Din</li>
+                <li>Ben Simmons</li>
+            </ul>
+        </div>
     </div>
-    
-    <form asp-action="Send" method="post" asp-controller="Rooms" class="chat-input">
-        <input type="hidden" name="roomId" id="roomId" value="@Model.Id">
-        <input type="hidden" name="roomName" id="roomName" value="@Model.Name">
-        <input type="text" class="text-dark " name="message" id="message" required="required">
-        <button type="submit" class="btn-dark send-button" name="sendButton" id="sendButton">Send</button>
-    </form>
-    
 </div>
 @section Scripts {
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
@@ -41,49 +70,60 @@
             .withUrl("/chatHub")
             .build();
         
+        /* обработка сообщения и создание html */
         connection.on("ReceiveMessage", function (msg, userName, when){
-            let message = document.createElement("div")
-            message.classList.add('message')
+            let msrow = document.createElement("div")
+            msrow.classList.add('msg-row')
             
-            let header = document.createElement("header")
-            header.appendChild(document.createTextNode(userName+':'))
+            let message = document.createElement("div")
+            message.classList.add('msg-text')
+            
+            let header = document.createElement("h2")
+            header.appendChild(document.createTextNode(userName))
             
             let p = document.createElement("p")
             p.appendChild(document.createTextNode(msg))
             
-            
-            let footer = document.createElement("footer")
-            footer.appendChild(document.createTextNode(when))
+            /*let footer = document.createElement("footer")
+            footer.appendChild(document.createTextNode(when))*/
             
             message.appendChild(header)
             message.appendChild(p)
-            message.appendChild(footer)
+            //message.appendChild(footer)
             
-            let body = document.querySelector('.chat-body')
-            body.append(message)
+            msrow.append(message)
+            
+            let colone = document.querySelector('.col-one')
+            colone.append(msrow)
         })
         
+        /* уведомление о приссоединении/отключении */
         connection.on("Notify", function (msg){
+            let msrow = document.createElement("div")
+            msrow.classList.add('msg-row')
+                        
             let message = document.createElement("div")
             message.classList.add('message')
             
-            let header = document.createElement("header")
+            let header = document.createElement("h2")
             header.style.color = 'black'
-            header.appendChild(document.createTextNode('info:'))
+            header.appendChild(document.createTextNode('info'))
             
             let i = document.createElement("i")
             i.appendChild(document.createTextNode(msg))
             i.style.color = 'black'
             
-            let footer = document.createElement("footer")
-            footer.appendChild(document.createTextNode(''))
+            /*let footer = document.createElement("footer")
+            footer.appendChild(document.createTextNode(''))*/
             
             message.appendChild(header)
             message.appendChild(i)
-            message.appendChild(footer)
+            /*message.appendChild(footer)*/
             
-            let body = document.querySelector('.chat-body')
-            body.append(message)
+            msrow.append(message)
+                        
+            let colone = document.querySelector('.col-one')
+            colone.append(msrow)
         })
         
         connection.start()
@@ -111,11 +151,6 @@
                 .catch(function (err) {
                     console.log(err)
                 });
-        });
-        
-        window.addEventListener('popstate', function (event) {
-        	// Log the state data to the console
-        	alert("test")
         });
         
     </script>
