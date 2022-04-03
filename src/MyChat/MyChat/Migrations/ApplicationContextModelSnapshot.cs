@@ -169,12 +169,6 @@ namespace MyChat.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("RoomUserRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("RoomUserUserId")
-                        .HasColumnType("text");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("text");
@@ -192,8 +186,6 @@ namespace MyChat.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("RoomUserRoomId", "RoomUserUserId");
-
                     b.ToTable("Messages");
                 });
 
@@ -205,7 +197,7 @@ namespace MyChat.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AdminId")
+                    b.Property<string>("AdminName")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -362,7 +354,7 @@ namespace MyChat.Migrations
 
             modelBuilder.Entity("MyChat.Models.Message", b =>
                 {
-                    b.HasOne("MyChat.Models.Room", null)
+                    b.HasOne("MyChat.Models.Room", "Room")
                         .WithMany("Messages")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -374,11 +366,7 @@ namespace MyChat.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyChat.Rooms.RoomUser", "RoomUser")
-                        .WithMany()
-                        .HasForeignKey("RoomUserRoomId", "RoomUserUserId");
-
-                    b.Navigation("RoomUser");
+                    b.Navigation("Room");
 
                     b.Navigation("User");
                 });

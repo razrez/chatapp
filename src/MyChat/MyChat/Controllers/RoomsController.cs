@@ -43,6 +43,7 @@ public class RoomsController : Controller
     {
         var roomWithMessages = _applicationContext.Rooms
             .Include(x => x.Messages)
+            .Include(u => u.RoomUsers)
             .FirstOrDefault(x => x.Id == id);
         return View(roomWithMessages);
     }
@@ -91,7 +92,7 @@ public class RoomsController : Controller
         if (ModelState.IsValid)
         {
             var currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
-            var room = new Room() { Name = roomModel.Name, AdminId = currentUser.Id };
+            var room = new Room() { Name = roomModel.Name, AdminId = currentUser.UserName };
             var user = new RoomUser() { UserId = currentUser.Id, Login = currentUser.Login, Room = room };
             await _applicationContext.Rooms.AddAsync(room);
             await _applicationContext.RoomUsers.AddAsync(user);
@@ -113,7 +114,7 @@ public class RoomsController : Controller
         var currentRoom = _applicationContext.Rooms.Find(id);
         var currentUser = _applicationContext.Users.First(us => us.UserName == User.Identity!.Name);
 
-        if (currentRoom.AdminId == currentUser.Id)
+        if (currentRoom.AdminId == currentUser.UserName)
         {
             _applicationContext.Rooms.Remove(currentRoom);
             _applicationContext.SaveChanges();
@@ -128,7 +129,7 @@ public class RoomsController : Controller
     [HttpPost]
     public async Task<IActionResult> Send (int roomId, string message)
     {
-        var sender = await _userManager.FindByNameAsync(User.Identity.Name);
+        var sender = await _userManager.FindByNameAsync(User.Identity!.Name);
         var currentRoom = await _applicationContext.Rooms.FindAsync(roomId);
         //return Content($"{currentRoom.Id} {sender.UserName}: {message}");
         await _applicationContext.AddAsync(new Message(){Name = sender.Login, Room = currentRoom!, Text = message, User = sender});

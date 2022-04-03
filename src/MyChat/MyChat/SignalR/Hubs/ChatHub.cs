@@ -1,11 +1,5 @@
-﻿using System.Security.Claims;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
-using MyChat.Controllers;
 using MyChat.Data;
 using MyChat.Models;
 
@@ -16,6 +10,7 @@ namespace MyChat.SignalR.Hubs
     {
         private readonly ApplicationContext _applicationContext;
         private readonly UserManager<User> _userManager;
+        private Dictionary<string, UserInfo> connections = new();
 
         //key-connectionId; value-roomName
         public ChatHub(ApplicationContext applicationContext, UserManager<User> userManager)
@@ -31,8 +26,23 @@ namespace MyChat.SignalR.Hubs
         public string GetConnectionId() => Context.ConnectionId;
         public async Task JoinRoom(string roomName)
         {
+            connections[roomName] = new UserInfo(Context.User?.Identity?.Name!,Context.ConnectionId);
+            var id = connections
+                .First(k => k.Key == roomName && k.Value.UserName == Context.User?.Identity?.Name!)
+                .Value.ConnectionId;
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
-            await Clients.Group(roomName).SendAsync("Notify", $"{Context.User?.Identity?.Name} here!");
+            await Clients.Group(roomName).SendAsync("Notify", $"{id} here!");
+        }
+        public async Task Kick(string room, string userName)
+        {
+            
+            /*var id = connections
+                            .First(k => k.Key == roomName && k.Value.UserName == userName)
+                            .Value.ConnectionId;*/
+            await Clients.Group(room).SendAsync("Notify", $" was kicked!");
+            
+            //await Groups.RemoveFromGroupAsync(id, roomName);
+
         }
         
         public Task LeaveRoom(string roomName)
@@ -70,4 +80,17 @@ namespace MyChat.SignalR.Hubs
             await base.OnDisconnectedAsync(exception);
         }
     }
+
+    public class UserInfo
+    {
+        public UserInfo(string userName, string connectionId)
+        {
+            UserName = userName;
+            ConnectionId = connectionId;
+        }
+
+        public string UserName { get; }
+        public string ConnectionId { get; }
+    }
+
 }

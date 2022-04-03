@@ -149,7 +149,7 @@ button:active {
 
 .msg-text{
   background: rgb(34, 70, 120);
-  padding: 10px 10px;
+  padding: 5px 15px;
   border-radius: 30px;
   max-width: fit-content;
   flex-basis: 80%;
@@ -167,6 +167,9 @@ button:active {
   font-weight: lighter;
   font-size: 16px;
   margin-bottom: 2px;
+}
+.msg-text date{
+  font-family: -apple-system, emoji ;
 }
 .msg-img{
   width: 50px;
@@ -202,7 +205,36 @@ button:active {
   display: inline-block;
   margin-right: 10px;
 }
-.col-two ul li.offline::before{
+.col-two ul li .offline::before{
   background: red;
 }
 /*на ::after можно повесить х(удаление из комнаты для админа)*/
+
+date{
+  font-size: 10px;
+}
+
+/* Это стили для кастомных сообщений об ошибке */
+/*
+.error {
+  width  : 100%;
+  padding: 0;
+
+  font-size: 80%;
+  color: white;
+  background-color: #900;
+  border-radius: 0 0 5px 5px;
+
+  box-sizing: border-box;
+}
+
+.error.active {
+  padding: 0.3em;
+}*/
+
+.col-two ul li button{
+  color: red;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
