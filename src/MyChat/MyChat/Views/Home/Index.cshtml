@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+.myDiv {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 100px;
+    margin: -50px 0 0 -100px;
+}
+</style>
+ 
+@if(User.Identity.IsAuthenticated)
+{
+    <h1 style="margin-left: 1rem;">Wellcum, @User.Identity.Name</h1>
+ 
+    <h2>
+        <form method="post" asp-controller="Account" asp-action="Logout">
+            <input type="submit" class = "btn btn-primary" value="log out" />
+        </form>
+    </h2>
+    <vc:room />
+}
+
+else
+{
+    <div style="display: flex;justify-content: center;align-items: center; margin: 0.75rem 1rem 0; flex-direction: column;
+                                                                                                     padding-bottom: 3rem;
+                                                                                                     overflow: auto;">
+        <div class="spinner-border text-danger" role="status" style="margin-top: inherit">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-border text-warning" role="status" style="margin-top: inherit">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-border text-info" role="status" style="margin-top: inherit">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-border text-light" role="status" style="margin-top: inherit">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-border text-dark" role="status" style="margin-top: inherit">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    
+
+    @*<div class="myDiv">
+        @Html.ActionLink("log in", "Login", "Account", null, new {@class = "btn btn-primary"})
+        @#1#Html.ActionLink("sign up", "Register", "Account", null, new {@class = "btn btn-primary"})#1#
+    </div>*@
+    
+    //<p><a asp-controller="Account" asp-action="Login">Login</a></p>
+    //<p><a asp-controller="Account" asp-action="Register">Register</a></p>
+}

@@ -1,0 +1,239 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model MyChat.Models.Room
+<link rel="stylesheet" href="~/css/Test.css" />
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<h2>
+    <span style="text-decoration-line: underline;">@User.Identity?.Name</span>, welcome to the room "<span style="text-decoration-line: underline;">@Model?.Name</span>"
+</h2>
+
+@*@if(User.Identity.IsAuthenticated){
+<vc:room></vc:room>
+}*@
+<div class="chat-container">
+    <div class="chatbox">
+        <div class="tester">
+            <div class="col-one" id="colonn">
+                @foreach (var message in @Model!.Messages)
+                {
+                    if (message.Name == Context.User.Identity?.Name)
+                    {
+                        <div class="msg-row msg-row2">
+                            <img src="~/favicon.ico" class="msg-img" alt=""/>
+                            <div class="msg-text">
+                                <h2>@message.Name</h2>
+                                <p>@message.Text</p>
+                                <date>@message.When.ToString("h:mm:ss")</date>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="msg-row">
+                            <div class="msg-text">
+                                <h2>@message.Name</h2>
+                                <p>@message.Text</p>
+                                <date>@message.When.ToString("h:mm:ss")</date>
+                            </div>
+                            <img src="~/favicon.ico" class="msg-img" alt=""/>
+                        </div>
+                    }
+                }
+            </div>
+            
+            <form style="flex-direction: row" class="msg-input">
+                <input type="hidden" name="roomId" id="roomId" value="@Model.Id">
+                <input type="hidden" name="roomName" id="roomName" value="@Model.Name">
+                <input type="text"  placeholder="Type your message here..." name="message" id="message" required="required">
+                <button type="submit" class="button" name="sendButton" id="sendButton">send</button>
+                <span class="error" aria-live="polite"></span>
+            </form>
+        </div>
+        <div class="col-two">
+            <h3>@Model.Name</h3>
+            <ul>
+                @if (User.Identity?.Name == @Model.AdminId)
+                {
+                    foreach (var user in Model.RoomUsers)
+                    {
+                        if (user.Login != Context.User.Identity.Name)
+                        {
+                            
+                        <form onsubmit="kick(room.value, rId.value, userName.value)" style="flex-direction: row " >
+                            <input type="hidden" name="room" id="room" value="@Model.Name">
+                            <input type="hidden" name="rId" id="rId" value="@Model.Id">
+                            <input type="hidden" name="userName" id="userName" value="@user.Login">
+                            <li>@user.Login<button type="submit" class="button" name="kickBtn" id="kickBtn">x</button>
+                            </li>
+                        </form>     
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        //Disable the send button until connection is established.
+        document.getElementById("sendButton").disabled = true;
+        
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .build();
+        
+        /* обработка сообщения и создание html */
+        connection.on("ReceiveMessage", function (msg, userName, when){
+            let msrow = document.createElement("div")
+            msrow.setAttribute('id', '@(Model.Messages.Count + 1)');
+            if (userName === '@Context.User.Identity?.Name'){
+                msrow.classList.add("msg-row", "msg-row2");
+            } else {
+                msrow.classList.add("msg-row");
+            }
+            
+            
+            let message = document.createElement("div")
+            message.classList.add('msg-text')
+            
+            let header = document.createElement("h2")
+            header.appendChild(document.createTextNode(userName))
+            
+            let p = document.createElement("p")
+            p.appendChild(document.createTextNode(msg))
+            
+            let date = document.createElement("date")
+            date.appendChild(document.createTextNode(when))
+            
+            message.appendChild(header)
+            message.appendChild(p)
+            message.appendChild(date)
+            
+            msrow.append(message)
+            
+            let colone = document.querySelector('.col-one')
+            colone.append(msrow)
+            
+            scrollDown();
+        })
+        
+        /* уведомление о приссоединении/отключении */
+        connection.on("Notify", function (msg){
+            let msrow = document.createElement("div")
+            msrow.classList.add('msg-row')
+            msrow.setAttribute('id', 'info');
+                        
+            let message = document.createElement("div")
+            message.classList.add('message')
+            
+            
+            let h3 = document.createElement("h3")
+            h3.appendChild(document.createTextNode(msg))
+            h3.style.color = 'red'
+            h3.style.fontSize = "15px";
+            h3.style.marginLeft = "10%"
+            
+            /*let footer = document.createElement("footer")
+            footer.appendChild(document.createTextNode(''))*/
+            
+            message.appendChild(h3)
+            /*message.appendChild(footer)*/
+            
+            msrow.append(message)
+                        
+            let colone = document.querySelector('.col-one')
+            colone.append(msrow)
+            scrollDown();
+        })
+        
+        connection.on("By", function (msg){
+            let msrow = document.createElement("div")
+            msrow.classList.add('msg-row')
+            msrow.setAttribute('id', 'info');
+                        
+            let message = document.createElement("div")
+            message.classList.add('message')
+            
+            
+            let h3 = document.createElement("h3")
+            h3.appendChild(document.createTextNode(msg))
+            h3.style.color = 'red'
+            h3.style.fontSize = "15px";
+            h3.style.marginLeft = "10%"
+            
+            /*let footer = document.createElement("footer")
+            footer.appendChild(document.createTextNode(''))*/
+            
+            message.appendChild(h3)
+            /*message.appendChild(footer)*/
+            
+            msrow.append(message)
+                        
+            let colone = document.querySelector('.col-one')
+            colone.append(msrow)
+            scrollDown();
+            connection.stop();
+            
+            location.assign('https://localhost:7096/');
+            //window.location.assign = 'https://localhost:7096/';
+        })
+        
+        connection.start()
+            .then(function () {
+                document.getElementById("sendButton").disabled = false;
+                connection.invoke('JoinRoom', '@Model.Name','@Model.Id')
+                    .then(res => {
+                        console.log("RoomJoined", res);
+                    })
+                    .catch(function (err){
+                        console.log(err)
+                    })     
+            })
+            .catch(function (err) {
+                connection.invoke('LeaveRoom', '@Model.Name')
+                console.log(err)
+            });
+        
+              
+        document.getElementById("sendButton").addEventListener("click", function (event) {
+            event.preventDefault();
+            //это нужно, чтобы проверять на валидность и не ловить Uncaught TypeError
+            let message = "";
+            message = document.getElementById("message")
+            let roomName = document.getElementById("roomName").value
+            let roomId = document.getElementById("roomId").value
+            if (message.validity.valid) {
+                // Если на момент валидации какое-то сообщение об ошибке уже отображается,
+                // если поле валидно, удаляем сообщение
+                // Сбросить содержимое сообщения
+                connection.invoke("SendMessage", message.value, roomName, roomId)
+                    .catch(function (err) {
+                        console.log(err)
+                    });
+                //auto scroll to the bottom в "ReceiveMessage", потому что так проскроллится на сообщение ниже
+                //auto clear input field
+                document.getElementById("message").value = "";
+            } 
+        });
+        
+        function scrollDown(){
+            document.querySelector('.col-one').scrollTo(0, document.querySelector('.col-one').scrollHeight);
+        }
+        /*function userJoined(){
+            let ul = document.querySelector('ul')
+            let li = document.createElement('li')
+            li.appendChild(document.createTextNode())
+            ul.appendChild(li)
+        }*/
+        
+        function kick(roomName, roomId, user){
+            connection.invoke("Kick",roomName,roomId,user)
+                .catch(function (err) {
+                    console.log(err)
+                });
+        }
+    </script>
+}

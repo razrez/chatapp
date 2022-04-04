@@ -1,0 +1,240 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'poppins', sans-serif;
+}
+
+/*body{
+  background-color: #1d61c1;
+}*/
+
+.chat-container{
+  margin-top: 2%;
+  position: relative;
+  overflow-y:auto;
+  overflow-x:auto;
+  /*height: 1000px;
+  width: 100%;*/
+  /*при масштабировании проявляется на скроллбаре*/
+  /*background-image: linear-gradient(to right, #1c00f2, #453f96);*/
+  /*background: rgb(133, 134, 136);*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888080;
+  border-radius: 3%;
+  box-shadow: 3px 2px 40px 3px rgba(2, 2, 5, 0.83);
+}
+
+::placeholder{
+  color: #fff;
+}
+
+.chatbox{
+  padding: 4px;
+  flex-grow: 1;
+  flex-direction: row;
+  background: rgb(34, 34, 37);
+  width: 60%;
+  min-width: 250px;
+  display: flex;
+  border-radius: 2%;
+  box-shadow: 3px 2px 40px 3px rgba(2, 2, 5, 0.83);
+
+}
+.tester{
+  flex: 1;
+  
+}
+.tester input{
+  /*margin: 1rem 1rem;*/
+  margin-top: 1rem;
+  margin-bottom: 4px;
+  border: 0;
+  outline: none;
+  padding: 4px;
+  background: rgb(28, 33, 47);
+  width: 100%;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #d7d1d1;
+  font-weight: lighter;
+  font-size: 16px;
+  border-radius: 15px;
+  /*border-bottom-left-radius: 30%;
+  border-bottom-right-radius: 30%;*/
+  text-align: center;
+  box-shadow: 3px 3px 6px 3px rgba(2, 2, 5, 0.16);
+}
+.msg-input{
+  display: flex;
+  flex-direction: row;
+}
+.msg-input > input {
+  flex-grow: 2;
+  color: #ccc8cb;
+}
+
+button {
+  padding-left: 1em;
+  padding-right: 1em;
+  font-size: small;
+  font-weight: bolder;
+  color: #224677;
+  background-color: #60a5d7;
+  /*margin: top right bottom left*/
+  margin: 1rem 0 4px 1rem;
+  flex-grow: 1;
+  border: none;
+  border-radius: 10%;
+  transition-duration: 0.1s;
+  /**/
+  cursor: pointer;
+  outline: none;
+  /**/
+}
+button:hover {
+  background-color: #224677; /* Green */
+  color: #d0ccbc;
+}
+button:active {
+  background-color: rgba(34, 70, 119, 0.27);
+  /*box-shadow: 0 3px rgba(2, 3, 7, 0.83);*/
+  transform: translateY(2px);
+}
+/*effect on class="button" click*/
+
+.tester input:hover{
+  box-shadow: inset 0 10px 42px rgba(12, 22, 49, 0.51);
+}
+.col-one{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+  height: 30rem;
+  overflow-y: auto;
+}
+.col-one::-webkit-scrollbar {
+  width: 1em;
+}
+.col-one::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgb(34, 70, 120);
+}
+.col-one::-webkit-scrollbar-thumb {
+  background-color: rgb(28, 33, 47);
+  outline: 1px solid rgb(34, 70, 119);
+}
+
+.col-two {
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 10%;
+  flex-basis: 150px;
+  background: rgba(2, 3, 7, 0.07);
+  border-radius: 10%;
+  box-shadow: inset 0 0 6px rgb(39, 56, 101);
+}
+
+.msg-row{
+  display: flex;
+  align-items: center;
+  /*поковырял*/
+  margin: 12px;
+  padding-left: 20px;
+}
+.msg-text:hover{
+  box-shadow: inset 0 0 6px rgb(3, 31, 58);
+}
+
+.msg-text{
+  background: rgb(34, 70, 120);
+  padding: 5px 15px;
+  border-radius: 30px;
+  max-width: fit-content;
+  flex-basis: 80%;
+  /*              */
+}
+.msg-text h2{
+  font-family: -apple-system, emoji ;
+  font-weight: 400;
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+.msg-text p{
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #d7d1d1;
+  font-weight: lighter;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+.msg-text date{
+  font-family: -apple-system, emoji ;
+}
+.msg-img{
+  width: 50px;
+  border-radius: 50%;
+  margin: 0 20px;
+}
+.msg-row2{
+  justify-content: flex-end;
+}
+
+.col-two h3{
+  text-decoration: underline wavy cornflowerblue;
+  font-family: lighter, ui-monospace;
+  text-align: center;
+  margin-top: 4px;
+  font-size: small;
+}
+.col-two ul{
+  list-style: none;
+  padding: 20px;
+}
+.col-two ul li{
+  padding: 5px 0;
+  font-size: small;
+  font-family: "Mongolian Baiti", serif;
+}
+.col-two ul li::before{
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: palegreen;
+  display: inline-block;
+  margin-right: 10px;
+}
+.col-two ul li .offline::before{
+  background: red;
+}
+/*на ::after можно повесить х(удаление из комнаты для админа)*/
+
+date{
+  font-size: 10px;
+}
+
+/* Это стили для кастомных сообщений об ошибке */
+/*
+.error {
+  width  : 100%;
+  padding: 0;
+
+  font-size: 80%;
+  color: white;
+  background-color: #900;
+  border-radius: 0 0 5px 5px;
+
+  box-sizing: border-box;
+}
+
+.error.active {
+  padding: 0.3em;
+}*/
+
+.col-two ul li button{
+  color: red;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+

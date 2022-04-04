@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MyChat.Models.Room>
+
+<style>
+    .toRight{
+        text-align: right;
+    }
+</style>
+
+<div style="flex: auto; margin-top: 1rem">
+    @Html.ActionLink("create new room", "Create",
+        "Rooms", null,
+        new { @class = "btn btn-outline-warning btn-sm img-thumbnail shadow" })
+</div>
+
+<h2>Cписок доступных комнат</h2>
+<table class="table table-hover table-secondary img-thumbnail shadow small ali" >
+    <tr><th>Room-name</th><th/><th/></tr>
+    @foreach (var room in Model)
+    {
+        <tr>
+            <td>@room.Name</td>
+            <td>
+                @*<form method="post" asp-action="Join" asp-controller="Rooms">
+                    <a class="btn btn-outline-primary btn-sm img-thumbnail shadow" asp-action="Join">join</a>
+                </form>*@
+                <form asp="JoinRoom" method="post">
+                    <input type="hidden" name="roomId" value="@room.Id" />
+                    <button type="submit" class="btn btn-outline-primary btn-sm img-thumbnail shadow" asp-action="JoinRoom">join</button>
+                </form>
+            </td>
+            <td>
+                <div class="toRight">
+                    <form asp-action="Delete" method="post">
+                        <button type="submit" class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@room.Id">Delete</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+
