@@ -70,7 +70,6 @@ namespace MyChat.SignalR.Hubs
             _applicationContext.RoomUsers.Remove(roomUser);
             await _applicationContext.SaveChangesAsync();
             
-            await Clients.Group(roomName).SendAsync("Notify", $"{Context.User?.Identity?.Name} этот?");
         }
         
         public Task LeaveRoom(string roomName)

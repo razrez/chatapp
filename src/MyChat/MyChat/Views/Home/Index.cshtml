@@ -15,7 +15,7 @@
  
 @if(User.Identity.IsAuthenticated)
 {
-    <h1 style="margin-left: 1rem;">Wellcum, @User.Identity.Name</h1>
+    <h1 style="margin-left: 1rem;">Welcome, @User.Identity.Name</h1>
  
     <h2>
         <form method="post" asp-controller="Account" asp-action="Logout">
