@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Data.Entity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using MyChat.Data;
 using MyChat.Models;
@@ -28,8 +29,7 @@ namespace MyChat.SignalR.Hubs
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
             await Clients.Group(roomName).SendAsync("Notify", $"{Context.User?.Identity?.Name} here!");
-            
-            
+
             var roomIdInt = int.Parse(roomId);
             var room = new RoomConnection()
             {
@@ -48,9 +48,10 @@ namespace MyChat.SignalR.Hubs
             }
             await _applicationContext.SaveChangesAsync();
         }
-        public async Task Kick(string roomName, string userName)
+        public async Task Kick(string roomName, string roomId, string userName)
         {
-            await Clients.Group(roomName).SendAsync("Notify", $" was kicked!");
+            await Clients.Group(roomName).SendAsync("Notify", $"{userName} was kicked!");
+            var roomIdInt = int.Parse(roomId);
         }
         
         public Task LeaveRoom(string roomName)

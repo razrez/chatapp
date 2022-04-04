@@ -26,7 +26,7 @@ public class ApplicationContext : IdentityDbContext<User>
         builder.Entity<Message>()
             .HasKey(k => k.Id);
 
-        builder.Entity<RoomConnection>().HasKey(x => new {x.Id, x.RoomId});
+        builder.Entity<RoomConnection>().HasKey(x => new {x.Id, x.RoomId, x.UserLogin});
         /*builder.Entity<RoomConnection>(table =>
         {
             table.HasKey(x => x.RoomId);

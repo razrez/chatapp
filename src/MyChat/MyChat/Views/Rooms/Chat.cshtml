@@ -43,7 +43,7 @@
                 }
             </div>
             
-            <form method="post" style="flex-direction: row" class="msg-input">
+            <form style="flex-direction: row" class="msg-input">
                 <input type="hidden" name="roomId" id="roomId" value="@Model.Id">
                 <input type="hidden" name="roomName" id="roomName" value="@Model.Name">
                 <input type="text"  placeholder="Type your message here..." name="message" id="message" required="required">
@@ -58,8 +58,9 @@
                 {
                     foreach (var user in Model.RoomUsers)
                     {
-                        <form method="post" style="flex-direction: row" >
+                        <form onsubmit="kick(room.value, rId.value, userName.value)" style="flex-direction: row " >
                             <input type="hidden" name="room" id="room" value="@Model.Name">
+                            <input type="hidden" name="rId" id="rId" value="@Model.Id">
                             <input type="hidden" name="userName" id="userName" value="@user.Login">
                             <li>@user.Login<button type="submit" class="button" name="kickBtn" id="kickBtn">x</button>
                             </li>
@@ -189,15 +190,18 @@
         function scrollDown(){
             document.querySelector('.col-one').scrollTo(0, document.querySelector('.col-one').scrollHeight);
         }
-        function userJoined(){
+        /*function userJoined(){
             let ul = document.querySelector('ul')
             let li = document.createElement('li')
             li.appendChild(document.createTextNode())
             ul.appendChild(li)
-        }
+        }*/
         
         function kick(roomName, roomId, user){
-            connection.invoke('')
+            connection.invoke("Kick",roomName,roomId,user)
+                .catch(function (err) {
+                    console.log(err)
+                });
         }
     </script>
 }
