@@ -13,6 +13,7 @@ namespace MyChat.Models
         {
             Messages = new List<Message>();
             RoomUsers = new List<RoomUser>();
+            RoomConnections = new List<RoomConnection>();
         }
 
         public int Id { get; set; }
@@ -20,5 +21,6 @@ namespace MyChat.Models
         public RoomType Type { get; set; }
         public ICollection<Message> Messages { get; set; }
         public ICollection<RoomUser> RoomUsers { get; set; }
+        public ICollection<RoomConnection> RoomConnections { get; set; }
     }
 }

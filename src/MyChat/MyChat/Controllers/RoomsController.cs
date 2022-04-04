@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyChat.Data;
 using MyChat.Models;
+using MyChat.Models.Rooms;
 using MyChat.Rooms;
 using MyChat.RoomsViewModels;
 

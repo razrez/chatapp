@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
+using MyChat.Models.Rooms;
 
 namespace MyChat.Rooms
 {
@@ -16,6 +17,5 @@ namespace MyChat.Rooms
         public User User { get; set; }
         
         public string? Login { get; set; } //user's login
-        
     }
 }

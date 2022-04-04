@@ -151,7 +151,7 @@
         connection.start()
             .then(function () {
                 document.getElementById("sendButton").disabled = false;
-                connection.invoke('JoinRoom', '@Model.Name')
+                connection.invoke('JoinRoom', '@Model.Name','@Model.Id')
                     .then(res => {
                         console.log("RoomJoined", res);
                     })
@@ -196,14 +196,8 @@
             ul.appendChild(li)
         }
         
-        document.getElementById("kickBtn").addEventListener("click", function (event) {
-            event.preventDefault();
-            let room = document.getElementById("room").value
-            let userName = document.getElementById("userName").value;
-            connection.invoke("Kick", room, userName)
-                .catch(function (err) {
-                    console.log(err)
-                });
-        });
+        function kick(roomName, roomId, user){
+            connection.invoke('')
+        }
     </script>
 }

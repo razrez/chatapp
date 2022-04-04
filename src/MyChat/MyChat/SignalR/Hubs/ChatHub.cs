@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using MyChat.Data;
 using MyChat.Models;
+using MyChat.Models.Rooms;
 
 namespace MyChat.SignalR.Hubs
 {
@@ -10,7 +11,6 @@ namespace MyChat.SignalR.Hubs
     {
         private readonly ApplicationContext _applicationContext;
         private readonly UserManager<User> _userManager;
-        private Dictionary<string, UserInfo> connections = new();
 
         //key-connectionId; value-roomName
         public ChatHub(ApplicationContext applicationContext, UserManager<User> userManager)
@@ -24,25 +24,33 @@ namespace MyChat.SignalR.Hubs
         }*/
 
         public string GetConnectionId() => Context.ConnectionId;
-        public async Task JoinRoom(string roomName)
+        public async Task JoinRoom(string roomName, string roomId)
         {
-            connections[roomName] = new UserInfo(Context.User?.Identity?.Name!,Context.ConnectionId);
-            var id = connections
-                .First(k => k.Key == roomName && k.Value.UserName == Context.User?.Identity?.Name!)
-                .Value.ConnectionId;
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
-            await Clients.Group(roomName).SendAsync("Notify", $"{id} here!");
+            await Clients.Group(roomName).SendAsync("Notify", $"{Context.User?.Identity?.Name} here!");
+            
+            
+            var roomIdInt = int.Parse(roomId);
+            var room = new RoomConnection()
+            {
+                RoomId = roomIdInt,
+                RoomName = roomName,
+                UserLogin = Context.User?.Identity?.Name,
+                ConnectionId = Context.ConnectionId
+            };
+            if (_applicationContext.RoomConnections.Contains(room))
+            {
+                _applicationContext.Update(room);
+            }
+            else
+            {
+                _applicationContext.RoomConnections.Add(room);
+            }
+            await _applicationContext.SaveChangesAsync();
         }
-        public async Task Kick(string room, string userName)
+        public async Task Kick(string roomName, string userName)
         {
-            
-            /*var id = connections
-                            .First(k => k.Key == roomName && k.Value.UserName == userName)
-                            .Value.ConnectionId;*/
-            await Clients.Group(room).SendAsync("Notify", $" was kicked!");
-            
-            //await Groups.RemoveFromGroupAsync(id, roomName);
-
+            await Clients.Group(roomName).SendAsync("Notify", $" was kicked!");
         }
         
         public Task LeaveRoom(string roomName)
@@ -74,23 +82,10 @@ namespace MyChat.SignalR.Hubs
             await base.OnConnectedAsync();
         }*/
 
-        public override async Task OnDisconnectedAsync(Exception? exception)
+        /*public override async Task OnDisconnectedAsync(Exception? exception)
         {
             await Clients.Group("").SendAsync("Notify", $"{Context.User?.Identity?.Name} has left :|");
             await base.OnDisconnectedAsync(exception);
-        }
+        }*/
     }
-
-    public class UserInfo
-    {
-        public UserInfo(string userName, string connectionId)
-        {
-            UserName = userName;
-            ConnectionId = connectionId;
-        }
-
-        public string UserName { get; }
-        public string ConnectionId { get; }
-    }
-
 }
