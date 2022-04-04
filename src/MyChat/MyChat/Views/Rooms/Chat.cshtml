@@ -58,19 +58,19 @@
                 {
                     foreach (var user in Model.RoomUsers)
                     {
+                        if (user.Login != Context.User.Identity.Name)
+                        {
+                            
                         <form onsubmit="kick(room.value, rId.value, userName.value)" style="flex-direction: row " >
                             <input type="hidden" name="room" id="room" value="@Model.Name">
                             <input type="hidden" name="rId" id="rId" value="@Model.Id">
                             <input type="hidden" name="userName" id="userName" value="@user.Login">
                             <li>@user.Login<button type="submit" class="button" name="kickBtn" id="kickBtn">x</button>
                             </li>
-                        </form>    
+                        </form>     
+                        }
                     }
                 }
-                @*@foreach (var user in Model.RoomUsers)
-                {
-                    <li>@user.Login</li>
-                }*@
             </ul>
         </div>
     </div>
@@ -147,6 +147,38 @@
             let colone = document.querySelector('.col-one')
             colone.append(msrow)
             scrollDown();
+        })
+        
+        connection.on("By", function (msg){
+            let msrow = document.createElement("div")
+            msrow.classList.add('msg-row')
+            msrow.setAttribute('id', 'info');
+                        
+            let message = document.createElement("div")
+            message.classList.add('message')
+            
+            
+            let h3 = document.createElement("h3")
+            h3.appendChild(document.createTextNode(msg))
+            h3.style.color = 'red'
+            h3.style.fontSize = "15px";
+            h3.style.marginLeft = "10%"
+            
+            /*let footer = document.createElement("footer")
+            footer.appendChild(document.createTextNode(''))*/
+            
+            message.appendChild(h3)
+            /*message.appendChild(footer)*/
+            
+            msrow.append(message)
+                        
+            let colone = document.querySelector('.col-one')
+            colone.append(msrow)
+            scrollDown();
+            connection.stop();
+            
+            location.assign('https://localhost:7096/');
+            //window.location.assign = 'https://localhost:7096/';
         })
         
         connection.start()

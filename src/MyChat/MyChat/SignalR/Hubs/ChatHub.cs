@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using MyChat.Data;
 using MyChat.Models;
 using MyChat.Models.Rooms;
@@ -31,27 +32,45 @@ namespace MyChat.SignalR.Hubs
             await Clients.Group(roomName).SendAsync("Notify", $"{Context.User?.Identity?.Name} here!");
 
             var roomIdInt = int.Parse(roomId);
-            var room = new RoomConnection()
+            var roomConnection = new RoomConnection()
             {
                 RoomId = roomIdInt,
                 RoomName = roomName,
                 UserLogin = Context.User?.Identity?.Name,
                 ConnectionId = Context.ConnectionId
             };
-            if (_applicationContext.RoomConnections.Contains(room))
+            if (_applicationContext.RoomConnections.Contains(roomConnection))
             {
-                _applicationContext.Update(room);
+                _applicationContext.Update(roomConnection);
             }
             else
             {
-                _applicationContext.RoomConnections.Add(room);
+                _applicationContext.RoomConnections.Add(roomConnection);
             }
             await _applicationContext.SaveChangesAsync();
         }
         public async Task Kick(string roomName, string roomId, string userName)
         {
-            await Clients.Group(roomName).SendAsync("Notify", $"{userName} was kicked!");
+            await Clients.OthersInGroup(roomName).SendAsync("Notify", $"{userName} was kicked!");
+            
             var roomIdInt = int.Parse(roomId);
+            var connectionId = QueryableExtensions
+                .Include(_applicationContext.RoomConnections,
+                    connection => connection.ConnectionId).AsSplitQuery()
+                .First(c => c.RoomId == roomIdInt && c.UserLogin == userName).ConnectionId;
+            
+            // redirect and close connection
+            await Clients.Client(connectionId).SendAsync("By", "u've been banned, bro");
+            //await Groups.RemoveFromGroupAsync(connectionId, roomName);
+            
+            var currentUser = await _userManager.FindByNameAsync(userName); 
+            
+            var roomUser = _applicationContext.RoomUsers.AsQueryable()
+                .FirstOrDefault(s => s.UserId == currentUser.Id && s.RoomId == roomIdInt);
+            _applicationContext.RoomUsers.Remove(roomUser);
+            await _applicationContext.SaveChangesAsync();
+            
+            await Clients.Group(roomName).SendAsync("Notify", $"{Context.User?.Identity?.Name} этот?");
         }
         
         public Task LeaveRoom(string roomName)
