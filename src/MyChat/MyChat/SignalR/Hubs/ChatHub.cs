@@ -8,24 +8,19 @@ using MyChat.Models.Rooms;
 
 namespace MyChat.SignalR.Hubs
 {
-    //будет использоваться как сервис в контроллере
     public class ChatHub : Hub
     {
         private readonly ApplicationContext _applicationContext;
         private readonly UserManager<User> _userManager;
 
-        //key-connectionId; value-roomName
         public ChatHub(ApplicationContext applicationContext, UserManager<User> userManager)
         {
             _applicationContext = applicationContext;
             _userManager = userManager;
         }
-        /*public async Task SendMessage(string user, string message)
-        {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
-        }*/
 
         public string GetConnectionId() => Context.ConnectionId;
+        
         public async Task JoinRoom(string roomName, string roomId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
